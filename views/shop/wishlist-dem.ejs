@@ -1,0 +1,128 @@
+<% var username=username || '' ; %>
+    <% if (username) { %>
+        <%-include('../partials/userheader',{username})-%>
+
+            <% }else{%>
+                <%-include('../partials/userheader')-%>
+                    <%  }  %>
+                      
+<div class="container">
+<div class="row">
+    <% for( let i = 0; i < wishList.length; i++ ) { %>
+        <div class="col-lg-4 col-md-12">
+            <div class="product__item">
+                <div class="product__item__pic set-bg">
+                        <img src="uploads/<%=wishList[i].product.productimage[0] %>" alt="">
+                </a>
+                <ul class="product__hover">
+                    <li><a href="uploads/<%=wishList[i].product.productimage[0] %>" class="image-popup"><span
+                                class="arrow_expand"></span></a></li>
+                    <li><button class="btn btn-dark btn-sm add-product" type="button" onclick="cartIncrement('<%= wishList[i].product._id %>')" data-value="<%= wishList[i].product._id %>">Add to Cart</button></li>
+                </ul>
+                </div>
+            </div>
+            <div class="product__item__text">
+                <%= wishList[i].product.productname %> <br>
+                    $<%= wishList[i].product.productpromotionalprice %>
+            </div>
+        </div>
+        <% } %>
+</div>
+</div>
+                        
+
+                        <!-- Footer Section Begin -->
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                        <!-- <script src="user/assets/js/jquery.magnific-popup.min.js"></script> -->
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+                        <%-include('../partials/userfooter')-%>
+                            <script>
+                                function cartIncrement(productid) {
+                                    console.log("aaaa");
+                                    // let count = document.querySelector('.cart-count')
+                                    // let val = parseInt(count.textContent)
+                                    $.ajax({
+                                        url: '/addToCart',
+                                        data: {
+                                            productid: productid
+                                        },
+                                        method: 'post',
+                                        success: (response) => {
+                                            if (response.response) {
+                                                console.log("bbbbbbbbbbbbbbbbbbbbbbb");
+                                                console.log(response);
+                                                // alert('added to cart')
+                                                // location.reload()
+                                                if (response.limit) {
+                                                    Swal.fire(
+                                                        'sorry!',
+                                                        'sorry you have only buy 10 quantity or product i sout of stock',
+                                                        'warning'
+                                                    )
+                                                } else {
+
+                                                    console.log("hqaifff");
+                                                    // document.querySelector('.cart-count').textContent=val+1
+                                                    Swal.fire({
+                                                        position: 'top',
+                                                        icon: 'success',
+                                                        title: 'Product added to cart',
+                                                        showConfirmButton: false,
+                                                        timer: 1600
+                                                    })
+                                                }
+                                            } else {
+                                                Swal.fire({
+                                                    position: 'top',
+                                                    icon: 'alert',
+                                                    title: 'Login needed',
+                                                    showConfirmButton: false,
+                                                    timer: 1600
+                                                })
+                                                setTimeout(() => {
+
+                                                    window.location = '/login'
+                                                }, 1700)
+                                            }
+                                        }
+                                    })
+                                }
+
+
+                            </script>
+                            <!-- <script>
+                                let link = document.getElementsByClassName("link");
+                                let currentvalue = 1;
+
+                                function activelink(event) {
+                                    for (l of link) {
+                                        l.classList.remove("active");
+                                    }
+
+                                    event.target.classList.add("active");
+                                    currentvalue = parseInt(event.target.getAttribute("data-value"));
+                                }
+
+                                function backbtn() {
+                                    if (currentvalue > 1) {
+                                        for (l of link) {
+                                            l.classList.remove("active");
+                                        }
+                                        currentvalue--;
+                                        link[currentvalue - 1].classList.add("active");
+                                    }
+                                }
+
+                                function nextbtn() {
+                                    if (currentvalue < link.length) {
+                                        for (l of link) {
+                                            l.classList.remove("active");
+                                        }
+                                        currentvalue++;
+                                        link[currentvalue - 1].classList.add("active");
+                                    }
+                                }
+
+                            </script> -->

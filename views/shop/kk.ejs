@@ -1,0 +1,508 @@
+<%- include('./layouts/main'); -%>
+    <link rel="stylesheet" href="user/assets/css/skins/skin-demo-13.css">
+    <link rel="stylesheet" href="user/assets/css/demos/demo-13.css">
+    <link rel="stylesheet" href="user/assets/css/checkout.css">
+    <link rel="stylesheet" href="user/assets/fonts/icofont/icofont.min.css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    </head>
+
+    <body>
+        <div class="page-wrapper">
+            <%- include('./layouts/header'); -%>
+                <% if (alert) { %>
+                    <script>alert("your banned")</script>
+                    <% } %>
+
+
+                        <main class="main">
+                            <div class="page-header text-center"
+                                style="background-image: url('user/assets/images/page-header-bg.jpg')">
+                                <div class="container">
+                                    <h1 class="page-title">Checkout<span>Shop</span></h1>
+                                </div><!-- End .container -->
+                            </div><!-- End .page-header -->
+                            <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                                <div class="container">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                        <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+                                    </ol>
+                                </div><!-- End .container -->
+                            </nav><!-- End .breadcrumb-nav -->
+                            <% if (cart.products !='') { %>
+
+
+                                <div class="page-content">
+                                    <div class="checkout">
+                                        <div class="container">
+                                            <div class="checkout-discount">
+                                                <form action="" id="checkout-form">
+                                                    <!-- <input type="text" name="coupon" class="form-control" 
+                                                        id="checkout-discount-input">
+                                                    <label for="checkout-discount-input" class="text-truncate coupon">Have a
+                                                        coupon? <span>Click here to enter your code</span></label> -->
+                                         
+                                            </div><!-- End .checkout-discount -->
+
+
+
+
+
+                                            <div class="row">
+                                                <div class="col-lg-9">
+
+                                                    <div class="account-card">
+                                                        <div class="account-title">
+                                                            <h4>delivery address</h4><a href="/profile_address">add
+                                                                address</a>
+                                                        </div>
+                                                        <div class="account-content">
+                                                            <div class="row">
+                                                            <% if (address != '') { %>
+                                                             
+                                                            
+
+                                                                <% for( let i=0; i < address[0].address.length; i++ ) {
+                                                                    %>
+
+
+
+                                                                    <div class="col-md-6 col-lg-4 alert fade show">
+                                                                        <div class="profile-card address slctaddress <%= i==0?'active':'' %> "
+                                                                            data-address="<%= i %>">
+                                                                            <h6>Home</h6>
+                                                                            <p>
+                                                                                <%= address[0].address[i].address %>,
+                                                                                    <%= address[0].address[i].name %>,
+                                                                                        <%= address[0].address[i].city
+                                                                                            %>-<%=
+                                                                                                address[0].address[i].zip
+                                                                                                %>. <%=
+                                                                                                    address[0].address[i].state
+                                                                                                    %>
+                                                                            </p>
+                                                                            <ul class="user-action">
+                                                                                <li><button class="edit icofont-edit"
+                                                                                        title="Edit This"
+                                                                                        data-bs-toggle="modal"
+                                                                                        data-bs-target="#address-edit"></button>
+                                                                                </li>
+                                                                                <li><button
+                                                                                        class="trash icofont-ui-delete"
+                                                                                        title="Remove This"
+                                                                                        data-bs-dismiss="alert"></button>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                    <% } %>
+                                                                    <% } %> 
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="cart-bottom">
+                                                <div class="cart-discount">
+                                                
+                                                        <div class="input-group">
+                                                            <input id="couponcheckid" name="coupon" type="text" class="form-control" 
+                                                                placeholder="coupon code">
+                                                                
+                                                          
+                                                            <div class="">
+                                                                <a  id="couponCheck" class="btn btn-outline-primary-2"
+                                                                ><i
+                                                                        class="icon-long-arrow-right"></i></a>
+
+                                                                        <a  id="coupencancel" class="d-none btn btn-outline-primary-2"
+                                                                >cancel</a>
+                                                                        <span id="insertcoupon" class=""></span>
+                                                            </div><!-- .End .input-group-append -->
+                                                            
+                                                        </div><!-- End .input-group -->
+                                             
+                                                </div><!-- End .cart-discount -->
+
+                                                <a href="/shop" class="btn btn-outline-dark-2"><span>Go
+                                                        Shop</span><i class="icon-refresh"></i></a>
+                                            </div><!-- End .cart-bottom -->
+
+                                                    <!-- <button class="mt-2 btn btn-outline-primary" type="button"
+                                                        data-toggle="collapse" data-target="#collapseExample"
+                                                        aria-expanded="false" aria-controls="collapseExample">
+                                                        New address ?
+                                                    </button> -->
+
+
+                                                </div><!-- End .col-lg-9 -->
+                                                <aside class="col-lg-3">
+                                                    <div class="summary">
+                                                        <h3 class="summary-title">Your Order</h3>
+                                                        <!-- End .summary-title -->
+
+                                                        <table class="table table-summary">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Product</th>
+                                                                    <th>Total</th>
+                                                                </tr>
+                                                            </thead>
+
+                                                            <tbody>
+                                                                <% if (cart !=null) { %>
+
+
+                                                                    <% for( let i=0; i < cart.products.length; i++ ) {
+                                                                        %>
+
+
+                                                                        <tr>
+                                                                            <td><a href="#">
+                                                                                    <%= cart.products[i].item.name.substring(0,60)
+                                                                                        %>...
+                                                                                </a> (qty:<%= cart.products[i].quantity
+                                                                                    %>)
+                                                                            </td>
+                                                                            <td>
+                                                                                &#8377;<%=
+                                                                                    cart.products[i].item.price*cart.products[i].quantity
+                                                                                    %>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <% } %>
+
+
+                                                                            <tr class="summary-subtotal">
+                                                                                <td>Subtotal:</td>
+                                                                                <td>RS. <%= total %>
+                                                                                </td>
+                                                                            </tr><!-- End .summary-subtotal -->
+                                                                            <tr>
+                                                                                <td>Shipping:</td>
+                                                                                <td>Free shipping</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Discount:</td>
+                                                                                <td><span class="text-danger"> -&#8377;
+                                                                                       <span id="discountspan"> <%= discount %></span>
+                                                                                    </span></td>
+                                                                            </tr>
+                                                                            <tr class="summary-total">
+                                                                                <td>Total:</td>
+                                                                                <td>RS.<span id="totalspan"> <%= total-discount %></span>
+                                                                                </td>
+                                                                            </tr><!-- End .summary-total -->
+                                                                            <% } %>
+                                                            </tbody>
+                                                        </table><!-- End .table table-summary -->
+
+                                                       
+                                                            <div class="accordion-summary" id="accordion-payment">
+                                                                <div class="card">
+                                                                    <div class="card-header" id="heading-3">
+                                                                        <h2 class="card-title">
+                                                                            <input value="cod" name="payment"
+                                                                                type="radio" data-toggle="collapse"
+                                                                                data-target=".collapseOne:not(.in)"
+                                                                                checked>
+                                                                            Cash on
+                                                                            delivery
+
+                                                                        </h2>
+                                                                    </div><!-- End .card-header -->
+
+
+
+                                                                    <div class="panel-group" id="accordion">
+                                                                        <div class="panel panel-default">
+
+                                                                            <div
+                                                                                class="collapseOne panel-collapse collapse">
+                                                                                <div class="panel-body">
+                                                                                    <p>If you are not comfortable making
+                                                                                        an
+                                                                                        online payment on
+                                                                                        electroshop.com,
+                                                                                        you
+                                                                                        can opt for the Cash on Delivery
+                                                                                        (C-o-D)
+                                                                                        payment method instead. With
+                                                                                        C-o-D
+                                                                                        you
+                                                                                        can pay in cash at the time of
+                                                                                        actual
+                                                                                        delivery of the product at your
+                                                                                        doorstep, without requiring you
+                                                                                        to
+                                                                                        make
+                                                                                        any advance payment online.</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div><!-- End .card -->
+                                                                <div class="card">
+
+                                                                    <div class="card-header" id="heading-3">
+
+                                                                        <h2 class="card-title mt-1 mb-2">
+                                                                            <input name="payment" type="radio"
+                                                                                data-toggle="collapse" value="online"
+                                                                                data-target=".collapseTwo:not(.in)" />
+                                                                            Online
+                                                                            Payment
+
+                                                                        </h2>
+                                                                    </div><!-- End .card-header -->
+
+
+                                                                    <div class="panel-group" id="accordion">
+                                                                        <div class="panel panel-default">
+
+                                                                            <div
+                                                                                class="collapseTwo panel-collapse collapse">
+                                                                                <div class="panel-body">
+                                                                                    <p>Online payments</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div><!-- End .card -->
+
+                                                                <button type="submit"
+                                                                    class="btn btn-outline-primary-2 btn-order btn-block">
+                                                                    <span class="btn-text">Place Order</span>
+                                                                    <span class="btn-hover-text">Proceed to
+                                                                        Checkout</span>
+
+                                                                </button>
+                                                            </div><!-- End .summary -->
+                                                        </form>
+
+
+                                                        <div class="modal fade" id="address-add">
+                                                            <div class="modal-dialog modal-dialog-centered">
+                                                                <div class="modal-content"><button class="modal-close"
+                                                                        data-dismiss="modal"><i
+                                                                            class="icofont-close"></i></button>
+                                                                    <form class="modal-form">
+                                                                        <div class="form-title">
+                                                                            <h3>add new address</h3>
+                                                                        </div>
+                                                                        <div class="form-group"><label
+                                                                                class="form-label">title</label><select
+                                                                                class="form-select">
+                                                                                <option selected>choose title</option>
+                                                                                <option value="home">home</option>
+                                                                                <option value="office">office</option>
+                                                                                <option value="Bussiness">Bussiness
+                                                                                </option>
+                                                                                <option value="academy">academy</option>
+                                                                                <option value="others">others</option>
+                                                                            </select></div>
+                                                                        <div class="form-group"><label
+                                                                                class="form-label">address</label><textarea
+                                                                                class="form-control"
+                                                                                placeholder="Enter your address"></textarea>
+                                                                        </div><button class="form-btn"
+                                                                            type="submit">save address info</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                </aside><!-- End .col-lg-3 -->
+                                            </div><!-- End .row -->
+                                            </form>
+                                        </div><!-- End .container -->
+                                    </div>
+                                    <% } else{%>
+                                        <div class="text-center" id="tab-orders" role=""
+                                            aria-labelledby="tab-orders-link">
+                                            <p><h6> Checkout is empty.</h6></p>
+                                            <a href="/shop" class="btn btn-outline-primary-2"><span>GO SHOP</span><i
+                                                    class="icon-long-arrow-right"></i></a>
+                                        </div><!-- .End .tab-pane -->
+                                        <!-- End .checkout -->
+                                </div><!-- End .page-content -->
+                                <% } %>
+                        </main><!-- End .main -->
+
+                        <%- include('./layouts/footer'); -%>
+                            <script>
+                                $("#checkout-form").submit((e) => {
+                                    e.preventDefault()
+                                    const address = $(".address.active").data('address')
+                                    if(address ==null){
+                                        Swal.fire(('Pleas add or select address'))
+                                        setTimeout(()=>{
+                                            window.location.href='/profile_address'
+                                        },1300)
+                                        
+                                    }else{
+                                    // const address =document.querySelector(.slctaddress .active)
+                                    Swal.fire({
+                                        title: 'Are you sure?',
+                                        text: "You won't be able to revert this!",
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Yes, proceed to checkout!'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+
+                                            $.ajax({
+                                                url: '/place-order',
+                                                method: 'post',
+                                                data: $('#checkout-form').serialize() + "&address=" + address,
+                                                success: (response) => {
+                                                    console.log(response)
+                                                    if(response.couponerr){
+                                                        Swal.fire(
+                                                            'Invalid coupon!',
+                                                            'Please select valid coupon',
+                                                            'warning'
+                                                        )
+                                                    }else if (response.status) {
+                                                        Swal.fire(
+                                                            'Order placed!',
+                                                            'Thank you for order.',
+                                                            'success'
+                                                        )
+                                                        setTimeout(() => {
+                                                            window.location.href = '/ordersuccess'
+                                                            console.log(response)
+
+                                                        }, 1200)
+                                                    } else {
+                                                        razorpayPayment(response)
+                                                    }
+                                                }
+                                            })
+
+                                        }
+                                    })
+                                }
+                                })
+
+                            </script>
+                            <script>
+                                function razorpayPayment(order) {
+                                    console.log(order.order.amount)
+                                    var options = {
+                                        "key": "rzp_test_lD5aVhNHRC1GZC", // Enter the Key ID generated from the Dashboard
+                                        "amount": order.order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                                        "currency": "INR",
+                                        "name": "Electro",
+                                        "description": "Test Transaction",
+                                        "image": "https://example.com/your_logo",
+                                        "order_id": order.order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                                        "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
+                                        "prefill": {
+                                            "name": "Gaurav Kumar",
+                                            "email": "gaurav.kumar@example.com",
+                                            "contact": "9746854699"
+                                        },
+                                        "notes": {
+                                            "address": "Razorpay Corporate Office"
+                                        },
+                                        "theme": {
+                                            "color": "#528FF0"
+                                        },
+                                        "handler": function (response) {
+                                        
+                                            verifyPayment(response, order.order);
+                                        }
+                                    };
+                             
+                                    var rzp1 = new Razorpay(options);
+                                    rzp1.open()
+                                    
+                                
+                                   
+
+                                };
+
+
+
+
+                                function verifyPayment(payment, order) {
+                                    $.ajax({
+                                        url: '/verify-payment',
+                                        method:'post',
+                                        data: {
+                                            payment,
+                                            order
+                                        },
+                                        success:((response)=>{
+                                            if(status){
+                                                window.location.href = '/ordersuccess'
+                                            }else{
+                                                window.location.href = '/ordersuccess'
+                                            }
+                                           
+                                        })
+                                    })
+                                }
+                            </script>
+
+                            <script>
+                                                $('#couponCheck').click(function(){
+                                                    const couponcheckid = $('#couponcheckid').val()
+                                                    const discountspan=parseInt($('#discountspan').html())
+                                                    const totalspan=parseInt($('#totalspan').html())
+                                                    console.log(couponcheckid,discountspan,totalspan)
+                                                   
+                                                    
+                                                    $.ajax({
+                                                    url: '/admin/checkCoupon',
+                                                    method:'post',
+                                                     data: {
+                                                        couponcheckid,
+                                                         
+                                                     },
+                                                     success:((response)=>{
+                                                         if(response.status){
+                                                            console.log(response)
+                                                            if(response.coupon.type=='percentage'){
+                                                                const dis = response.coupon.discount*totalspan/100
+                                                            $('#insertcoupon').removeClass('text-danger').addClass('text-success').html('coupon Applied')
+                                                            $('#discountspan').html(dis+discountspan)
+                                                            console.log(dis,response.coupon.discount,totalspan)
+                                                            $('#totalspan').html(totalspan-dis)
+                                                            $('#couponcheckid').attr('readonly','true');
+                                                            $('#couponCheck').addClass('d-none');
+                                                            $('#coupencancel').removeClass('d-none');
+                                                            }else{
+                                                            $('#insertcoupon').removeClass('text-danger').addClass('text-success').html('coupon Applied')
+                                                            $('#discountspan').html(response.coupon.discount+discountspan)
+                                                            $('#totalspan').html(totalspan-response.coupon.discount)
+                                                            $('#couponcheckid').attr('readonly','true');
+                                                            $('#couponCheck').addClass('d-none');
+                                                            $('#coupencancel').removeClass('d-none');
+                                                            }
+                                                        
+
+            
+                                                         }else{
+                                                            $('#insertcoupon').addClass('text-danger').html(response.err)
+                                                         }
+                                                     
+                                                     })
+                                                    })
+                                                })
+
+
+
+                                                $('#coupencancel').click(function(){
+                                                   location.reload()
+                                                   
+                                                    
+                                                    
+                                                })
+                                                
+                                                </script>

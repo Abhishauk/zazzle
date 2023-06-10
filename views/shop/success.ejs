@@ -1,0 +1,95 @@
+<%-include('../partials/userheader')-%>
+
+<script src="https://unpkg.com/feather-icons"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
+
+
+
+<body style="overflow: hidden;">
+
+<style>
+    #order-placed-container {
+    background-image: url('/img/back-img.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    height: 500px; /* Adjust the height as needed */
+}
+.zoom-effect {
+  transition: transform 0.3s ease;
+  color: black;
+  font-size: 22px;
+  font-weight: normal;
+}
+
+.zoom-effect:hover {
+  transform: scale(1.1);
+  color: white;
+  font-weight: bold;
+}
+
+
+</style>
+
+
+
+
+    <!-- Header Info Begin -->
+    <!-- <div class="header-info">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="header-item">
+                        <img src="img/icons/delivery.png" alt="">
+                        <p>Free shipping on orders over $30 in USA</p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-left text-lg-center">
+                    <div class="header-item">
+                        <img src="img/icons/voucher.png" alt="">
+                        <p>20% Student Discount</p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-left text-xl-right">
+                    <div class="header-item">
+                    <img src="img/icons/sales.png" alt="">
+                    <p>30% off on dresses. Use code: 30OFF</p>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!-- Header Info End -->
+    <!-- Header End -->
+
+
+    <section>
+        <div class="page-header text-center" id="order-placed-container" style="padding-top: 40px;">      
+            <div class="container d-flex flex-column align-items-center col-md-4 " style="height: 30vh; background-color: white; padding: 33px; border-radius: 30px;">
+              
+                <h4 class="page-title" style="font-weight: 500; color: rgb(0, 0, 0);">Payment Failed.</h4>
+                <img src="/img/red-cross.png" alt="Tick" style="width: 50px; height: 50px;margin-top: 20px;">
+            </div>
+            <br>
+            <a href="/" class="btn btn-outline-primary-2 mx-3 zoom-effect" style=" font-size: 22px;"><span>Continue Shopping</span><i class="icon-refresh"></i></a>
+<a href="/orders" class="btn btn-outline-primary-2 mx-3 zoom-effect" style="font-size: 22px;"><span>View Details</span><i class="icon-cart-plus"></i></a>
+
+            
+
+        </div><!-- End .page-header -->
+        
+    
+     
+            <div class="container mt-5">
+              
+    
+                
+            </div>
+     
+    </section>
+    
+    <!-- Cart Page Section End -->
+
+
+    <%-include('../partials/userfooter')-%>

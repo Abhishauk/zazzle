@@ -1,0 +1,211 @@
+<%-include('../partials/adminheader')-%>
+  <section class="content-main">
+    <div class="content-header">
+      <h2 class="content-title">Users list</h2>
+      <div>
+        <a href="#" class="btn btn-primary"><i class="material-icons md-plus"></i> Create new</a>
+      </div>
+    </div>
+    <div class="card mb-4">
+      <header class="card-header">
+        <div class="row gx-3">
+          <!-- <div class="col-lg-4 col-md-6 me-auto">
+            <input type="text" placeholder="Search..." class="form-control" />
+          </div> -->
+          <!-- <div class="col-lg-2 col-md-3 col-6">
+            <select class="form-select">
+              <option>Status</option>
+              <option>Active</option>
+              <option>Disabled</option>
+              <option>Show all</option>
+            </select>
+          </div> -->
+          <!-- <div class="col-lg-2 col-md-3 col-6">
+            <select class="form-select">
+              <option>Show 20</option>
+              <option>Show 30</option>
+              <option>Show 40</option>
+            </select>
+          </div> -->
+        </div>
+      </header>
+      <!-- card-header end// -->
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover" id="user-lists">
+            <thead>
+              <tr>
+                <th>No:</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>phonenumber</th>
+                <th class="text-end">Action</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% let count=1; %>
+                <% users.forEach(function(user) { %>
+
+                  <tr>
+                    <td>
+                      <%= count %>
+                    </td>
+                    <td width="25%">
+                      <a href="#" class="itemside">
+                        <!-- <div class="left">
+                                                    <img src="/admin/imgs/people/avatar1.jpg" class="img-sm img-avatar"
+                                                        alt="Userpic">
+                                                </div> -->
+                        <div class="info pl-3">
+                          <h6 class="mb-0 title">
+                            <%= user.username %>
+                          </h6>
+                        </div>
+                      </a>
+                    </td>
+                    <td>
+                      <div class="info">
+                        <h6 class="mb-0 title">
+                          <%= user.email %>
+                        </h6>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="info pl-3">
+                        <h6 class="mb-0 title">
+                          <%= user.phonenumber %>
+                        </h6>
+                      </div>
+                    </td>
+
+                    <!-- <td>
+                                            <% if (user.isActive) { %>
+                                                <span class="badge rounded-pill alert-success">
+                                                    Active
+                                                </span>
+                                             
+                                            <% }else{ %>
+                                            <span class="badge rounded-pill alert-danger">
+                                                Inactive
+                                            </span>
+                                            <% }%>
+                                        </td>
+                                         -->
+                    <td>
+                      <% if(user.block==true){%>
+                        <button onclick="unblock('<%=user._id%>')" class="btn btn-warning">UnBlock</button>
+                        <% }else { %>
+                          <button onclick="block('<%=user._id%>')" class="btn btn-danger">Block</button>
+                                   <% } %>
+                    </td>
+                    <td class="text-end">
+                      <!-- <% if (user.isActive) { %>
+                                                <a href="/admin/blockuser/<%= user._id %>" class="btn btn-danger rounded font-sm mt-15 ">block</a>
+                                              -->
+                      <!-- <% }else{ %>
+                                      
+                        <a href="/admin/unblockuser/<%= user._id %>" class="btn btn-info rounded font-sm mt-15 ">unblock</a>
+                                            <% }%> -->
+
+                      <a href="/admin/viewuser/<%=user._id%>" class="btn btn-brand rounded font-sm mt-15">View
+                        details</a>
+                    </td>
+                  </tr>
+                  <% count++; %>        <% }); %>
+            </tbody>
+          </table>
+          <!-- table-responsive.// -->
+        </div>
+      </div>
+      <!-- card-body end// -->
+    </div>
+    <!-- card end// -->
+    <div class="pagination-area mt-15 mb-50">
+      <!-- <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-start">
+          <li class="page-item active">
+            <a class="page-link" href="#">01</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">02</a></li>
+          <li class="page-item"><a class="page-link" href="#">03</a></li>
+          <li class="page-item">
+            <a class="page-link dot" href="#">...</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">16</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
+          </li>
+        </ul>
+      </nav> -->
+      <%-include('pagination')-%>
+    </div>
+  </section>
+  <%-include('../partials/adminfooter')-%>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      function unblock(productId) {
+        const url2 = `/admin/unblockuser/${productId}`;
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "ok",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+              const response = await fetch(url2, {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              });
+              console.log(response);
+              Swal.fire("Unblocked!", "User has been Unblocked.", "success").then(
+                (res) => {
+                  window.location.reload();
+                }
+              );
+            } catch (error) {
+              console.error(`${error.message}`);
+            }
+          }
+        });
+      }
+      function block(productId) {
+        const url2 = `/admin/blockuser/${productId}`;
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "ok",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+              const response = await fetch(url2, {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              });
+              console.log(response);
+              Swal.fire("blocked!", "User has been blocked.", "success").then(
+                (res) => {
+                  window.location.reload();
+                }
+              );
+            } catch (error) {
+              console.error(`${error.message}`);
+            }
+          }
+        });
+      }
+
+    </script>

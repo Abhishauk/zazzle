@@ -1,0 +1,635 @@
+﻿<% var username=username || '' ; %>
+    <% if (username) { %>
+        <%-include('../partials/userheader',{username})-%>
+
+            <% }else{%>
+                <%-include('../partials/userheader')-%>
+                    <%  }  %>
+                        <!DOCTYPE html>
+                        <html class="no-js" lang="en">
+
+
+                        <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:27:15 GMT -->
+
+                        <head>
+                            <meta charset="utf-8">
+                            <title>Evara - eCommerce HTML Template</title>
+                            <meta http-equiv="x-ua-compatible" content="ie=edge">
+                            <meta name="description" content="">
+                            <meta name="viewport" content="width=device-width, initial-scale=1">
+                            <meta property="og:title" content="">
+                            <meta property="og:type" content="">
+                            <meta property="og:url" content="">
+                            <meta property="og:image" content="">
+                            <!-- Favicon -->
+                            <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
+                            <!-- Template CSS -->
+                            <link rel="stylesheet" href="assets/css/main.css">
+                            <style>
+                                /* .nav-item {
+                padding: 15px;
+            } */
+
+                                .nav-item .nav-link.active {
+                                    color: #fff;
+                                }
+
+                                .dashboard-menu ul li a.active {
+                                    color: #fff;
+                                    background-color: #0a0a0a;
+                                }
+
+                                .nav-item .nav-link {
+                                    font-size: 18px;
+                                    color: #666666;
+                                    font-weight: 600;
+                                    border: none;
+                                    border-top-left-radius: 0px;
+                                    border-top-right-radius: 0px;
+                                    padding: 20px;
+                                }
+                            </style>
+                        </head>
+
+
+                        <body>
+
+                            <!-- <div class="breadcrumb-option">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb__links">
+                            <a href="/home"><i class="fa fa-home"></i> Home</a>
+                            <span>profile</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+                            <!-- <main class="main"> -->
+                            <!-- <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="index.html" rel="nofollow">Home</a>
+                    <span></span> Pages
+                    <span></span> Account
+                </div>
+            </div>
+        </div> -->
+                            <section class="pt-150 pb-150">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-lg-10 m-auto">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="dashboard-menu">
+                                                        <ul class="nav flex-column" role="tablist">
+                                                            <!-- <li class="nav-item">
+                                            <a class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" href="#dashboard" role="tab" aria-controls="dashboard" aria-selected="false"><i class="fi-rs-settings-sliders mr-10"></i>Dashboard</a>
+                                        </li> -->
+                                                            <li class="nav-item">
+                                                                <a class="nav-link active" id="orders-tab"
+                                                                    data-bs-toggle="tab" href="#orders" role="tab"
+                                                                    aria-controls="orders" aria-selected="false"><i
+                                                                        class="fi-rs-shopping-bag mr-10"></i>Orders</a>
+                                                            </li>
+                                                            <!-- <li class="nav-item">
+                                            <a class="nav-link" id="track-orders-tab" data-bs-toggle="tab"
+                                                href="#track-orders" role="tab" aria-controls="track-orders"
+                                                aria-selected="false"><i
+                                                    class="fi-rs-shopping-cart-check mr-10"></i>Track Your Order</a>
+                                        </li> -->
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" id="address-tab"
+                                                                    data-bs-toggle="tab" href="#Address" role="tab"
+                                                                    aria-controls="address" aria-selected="true"><i
+                                                                        class="fi-rs-marker mr-10"></i>My Address</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" id="account-detail-tab"
+                                                                    data-bs-toggle="tab" href="#account-detail"
+                                                                    role="tab" aria-controls="account-detail"
+                                                                    aria-selected="true"><i
+                                                                        class="fi-rs-user mr-10"></i>Account details</a>
+                                                            </li>
+                                                            <!-- <li class="nav-item">
+                                            <a class="nav-link" href="page-login-register.html"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
+                                        </li> -->
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="tab-content dashboard-content">
+                                                        <!-- <div class="tab-pane fade active show" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab"> -->
+                                                        <!-- <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="mb-0">Hello Rosie! </h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <p>From your account dashboard. you can easily check &amp; view your <a href="#">recent orders</a>, manage your <a href="#">shipping and billing addresses</a> and <a href="#">edit your password and account details.</a></p>
+                                            </div>
+                                        </div> -->
+                                                        <!-- </div> -->
+
+
+
+
+
+
+                                                        <div class="tab-pane fade active show" id="orders"
+                                                            role="tabpanel" aria-labelledby="orders-tab">
+                                                            <div class="card ">
+                                                                <div class="card-header">
+                                                                    <h5 class="mb-0">Your Orders</h5>
+                                                                </div>
+
+                                                                <% if (orders.length!=0) { %>
+                                                                    <div class="card-body">
+                                                                        <div class="table-responsive">
+
+
+                                                                            <table class="table">
+
+                                                                                <thead>
+
+                                                                                    <tr>
+                                                                                        <th>Date</th>
+                                                                                        <!-- <th>address</th> -->
+                                                                                        <th>Total</th>
+                                                                                        <th>PaymentMethod</th>
+                                                                                        <th>OrderStatus</th>
+                                                                                        <th>Action</th>
+
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <% orders.forEach(order=>{%>
+                                                                                        <tr>
+                                                                                            <td>
+                                                                                                <%=order.orderDate%>
+                                                                                            </td>
+
+                                                                                            <td>
+                                                                                                <%=order.totalAmount %>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <%=order.paymentMethod%>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <% if(order.orderStatus=='placed'
+                                                                                                    ) {%>
+                                                                                                    <span
+                                                                                                        class="badge rounded-pill alert-success text-success">
+                                                                                                        <%=order.orderStatus
+                                                                                                            %>
+                                                                                                    </span>
+                                                                                                    <% }else if
+                                                                                                        (order.orderStatus=='Cancelled'
+                                                                                                        ) { %>
+                                                                                                        <span
+                                                                                                            class="badge rounded-pill alert-danger text-danger">
+                                                                                                            <%= order.orderStatus
+                                                                                                                %>
+                                                                                                        </span>
+                                                                                                        <% }else{ %>
+                                                                                                            <span
+                                                                                                                class="badge rounded-pill alert-warning text-warning">
+                                                                                                                <%= order.orderStatus
+                                                                                                                    %>
+                                                                                                            </span>
+
+                                                                                                            <% } %>
+                                                                                            </td>
+                                                                                            <td><a href="/order-detailes/<%=order._id%>"
+                                                                                                    class="btn-small d-block">View</a>
+                                                                                            </td>
+                                                                                        </tr>
+
+                                                                                        <% }) %>
+                                                                                </tbody>
+
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <% } else{ %>
+
+                                                                        <h6>No orders</h6>
+                                                                        <% } %>
+                                                            </div>
+                                                        </div>
+
+
+
+
+                                                        <!-- <div class="tab-pane fade" id="track-orders" role="tabpanel"
+                                        aria-labelledby="track-orders-tab">
+                                        <div class="card">
+
+                                            <div class="card-header">
+                                                <h5 class="mb-0">Orders tracking</h5>
+                                            </div>
+                                            <div class="card-body contact-from-area">
+                                                <p>To track your order please enter your OrderID in the box below and
+                                                    press "Track" button. This was given to you on your receipt and in
+                                                    the confirmation email you should have received.</p>
+                                                <div class="row">
+                                                    <div class="col-lg-8">
+                                                        <form class="contact-form-style mt-30 mb-50" action="#"
+                                                            method="post">
+                                                            <div class="input-style mb-20">
+                                                                <label>Order ID</label>
+                                                                <input name="order-id"
+                                                                    placeholder="Found in your order confirmation email"
+                                                                    type="text" class="square">
+                                                            </div>
+                                                            <div class="input-style mb-20">
+                                                                <label>Billing email</label>
+                                                                <input name="billing-email"
+                                                                    placeholder="Email you used during checkout"
+                                                                    type="email" class="square">
+                                                            </div>
+                                                            <button class="submit submit-auto-width"
+                                                                type="submit">Track</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                                        <div class="tab-pane fade" id="Address" role="tabpanel"
+                                                            aria-labelledby="address-tab">
+                                                            <button type="button" class="btn btn-dark h-25 mb-3"
+                                                                data-toggle="modal" data-target="#exampleModal">
+                                                                Add new address
+                                                            </button>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="col-lg-10 ">
+                                                                        <div class="card mb-4 mb-lg-1">
+                                                                            <div class="card-header">
+                                                                                <h5 class="mb-0">Billing Address</h5>
+                                                                            </div>
+                                                                            <div class="card-body">
+                                                                                <div class="form-check col-md-12">
+                                                                                    <% if(address) {%>
+
+                                                                                        <%address.forEach(function(address)
+                                                                                            { %>
+                                                                                            <% if(address.status==true){
+                                                                                                %>
+                                                                                                <%let i=0 %>
+
+                                                                                                    <br>
+
+
+
+
+                                                                                                    <label
+                                                                                                        class="form-check-label"
+                                                                                                        for="address1">
+                                                                                                        <address
+                                                                                                            class="mb-3">
+
+                                                                                                            <%=address.name%>
+                                                                                                                ,
+                                                                                                                <%=address.address%>
+                                                                                                                    ,
+                                                                                                                    <%=address.city%>
+                                                                                                                        ,
+                                                                                                                        <%=address.state
+                                                                                                                            %>
+                                                                                                                            <br>
+                                                                                                                            <%=address.phone
+                                                                                                                                %>
+                                                                                                                                <button
+                                                                                                                                    onclick="deleteaddress('<%=address._id%>')"
+                                                                                                                                    class="btn5"><i
+                                                                                                                                        class="fa fa-trash"></i></button>
+                                                                                                        </address>
+
+                                                                                                    </label>
+
+
+
+                                                                                                    <% i++ %>
+
+                                                                                                        <% } %>
+                                                                                                            <% }) %>
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                        
+                                                                </div>
+
+
+
+                                                                <% } else{ %>
+
+                                                                    <h6>No address</h6>
+                                                                    <% } %>
+                                                                        <!-- <button type="button" class="btn btn-dark mt-3" data-toggle="modal"
+                                                        data-target="#exampleModal">
+                                                        Add adress
+                                                    </button> -->
+
+
+                                                                        <div class="modal fade" id="exampleModal"
+                                                                            tabindex="-1" role="dialog"
+                                                                            aria-labelledby="exampleModalLabel"
+                                                                            aria-hidden="true">
+                                                                            <div class="modal-dialog" role="document">
+
+                                                                                <div class="modal-content">
+                                                                                    <div class="modal-header">
+                                                                                        <h5 class="modal-title"
+                                                                                            id="exampleModalLabel">Add
+                                                                                            address</h5>
+                                                                                        <button type="button"
+                                                                                            class="close"
+                                                                                            data-dismiss="modal"
+                                                                                            aria-label="Close">
+                                                                                            <span
+                                                                                                aria-hidden="true">&times;</span>
+                                                                                        </button>
+                                                                                    </div>
+
+                                                                                    <div class="modal-body">
+                                                                                        <form id="placeOrder-form"
+                                                                                            class="checkout__form"
+                                                                                            method="post">
+                                                                                            <div class="row">
+                                                                                                <div
+                                                                                                    class="col-lg-6 col-md-6 col-sm-6">
+                                                                                                    <div
+                                                                                                        class="checkout__form__input">
+                                                                                                        <p> Name
+                                                                                                            <span>*</span>
+                                                                                                        </p>
+                                                                                                        <input
+                                                                                                            type="text"
+                                                                                                            name="name"
+                                                                                                            id="name">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <!-- <div class="col-lg-6 col-md-6 col-sm-6">
+                                                                            <div class="checkout_form_input">
+                                                                                <p>Last Name <span>*</span></p>
+                                                                                <input type="text" name="lastname" id="lastname">
+                                                                            </div>
+                                                                        </div> -->
+
+                                                                                                <div class="col-lg-12">
+
+                                                                                                    <div
+                                                                                                        class="checkout__form__input">
+                                                                                                        <p>Address
+                                                                                                            <span>*</span>
+                                                                                                        </p>
+                                                                                                        <input
+                                                                                                            type="text"
+                                                                                                            placeholder="Street Address"
+                                                                                                            name="address"
+                                                                                                            id="address">
+
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="checkout__form__input">
+                                                                                                        <p>Town/City
+                                                                                                            <span>*</span>
+                                                                                                        </p>
+                                                                                                        <input
+                                                                                                            type="text"
+                                                                                                            name="city"
+                                                                                                            id="city">
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="checkout__form__input">
+                                                                                                        <p>Country/State
+                                                                                                            <span>*</span>
+                                                                                                        </p>
+                                                                                                        <input
+                                                                                                            type="text"
+                                                                                                            name="state"
+                                                                                                            id="state">
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="checkout__form__input">
+                                                                                                        <p>Postcode/Zip
+                                                                                                            <span>*</span>
+                                                                                                        </p>
+                                                                                                        <input
+                                                                                                            type="text"
+                                                                                                            name="postcode"
+                                                                                                            id="postcode">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div
+                                                                                                    class="col-lg-6 col-md-6 col-sm-6">
+                                                                                                    <div
+                                                                                                        class="checkout__form__input">
+                                                                                                        <p>Phone
+                                                                                                            <span>*</span>
+                                                                                                        </p>
+                                                                                                        <input
+                                                                                                            type="text"
+                                                                                                            name="phone"
+                                                                                                            id="phonenumber">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div
+                                                                                                    class="col-lg-6 col-md-6 col-sm-6">
+                                                                                                    <div
+                                                                                                        class="checkout__form__input">
+                                                                                                        <p>Email
+                                                                                                            <span>*</span>
+                                                                                                        </p>
+                                                                                                        <input
+                                                                                                            type="text"
+                                                                                                            name="email"
+                                                                                                            id="email">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="col-lg-12">
+
+                                                                                                    <button
+                                                                                                        type="submit"
+                                                                                                        class="btn btn-dark"
+                                                                                                        data-toggle="modal"
+                                                                                                        data-target="#exampleModal">
+                                                                                                        Save
+                                                                                                    </button>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                    </div>
+                                                                                    </form>
+
+
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                 
+
+                                                <div class="tab-pane fade" id="account-detail" role="tabpanel"
+                                                    aria-labelledby="account-detail-tab">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h5>Account Details</h5>
+                                                        </div>
+                                                        <div class="card-body">
+
+                                                            <td>
+                                                                <%=user.name %>
+                                                            </td><br>
+                                                            <td>
+                                                                <%=user.phonenumber %>
+                                                            </td><br>
+                                                            <td>
+                                                                <%=user.email%>
+                                                            </td> <br>
+
+
+
+                                                            <!-- <p>New York</p> -->
+                                                            <a href="#" class="btn-small">Edit</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                    </div>
+                                                              
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                </div>
+                            </section>
+                            <!-- </main> -->
+
+                            <!-- Vendor JS-->
+                            <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
+                            <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
+                            <script src="assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+                            <script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
+                            <script src="assets/js/plugins/slick.js"></script>
+                            <script src="assets/js/plugins/jquery.syotimer.min.js"></script>
+                            <script src="assets/js/plugins/wow.js"></script>
+                            <script src="assets/js/plugins/jquery-ui.js"></script>
+                            <script src="assets/js/plugins/perfect-scrollbar.js"></script>
+                            <script src="assets/js/plugins/magnific-popup.js"></script>
+                            <script src="assets/js/plugins/select2.min.js"></script>
+                            <script src="assets/js/plugins/waypoints.js"></script>
+                            <script src="assets/js/plugins/counterup.js"></script>
+                            <script src="assets/js/plugins/jquery.countdown.min.js"></script>
+                            <script src="assets/js/plugins/images-loaded.js"></script>
+                            <script src="assets/js/plugins/isotope.js"></script>
+                            <script src="assets/js/plugins/scrollup.js"></script>
+                            <script src="assets/js/plugins/jquery.vticker-min.js"></script>
+                            <script src="assets/js/plugins/jquery.theia.sticky.js"></script>
+                            <!-- Template  JS -->
+                            <script src="assets/js/main.js"></script>
+                        </body>
+
+
+                        <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:27:15 GMT -->
+
+                        </html>
+                        <%-include('../partials/userfooter')-%>
+                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                            <!-- <script src="user/assets/js/jquery.magnific-popup.min.js"></script> -->
+                            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                            <script src="https://unpkg.com/sweetalert@2"></script>
+
+                            <script>
+                                $(document).ready(function () {
+                                    $('#placeOrder-form').submit(function (e) {
+                                        console.log("aaaa");
+                                        e.preventDefault(); // Prevent the form from submitting through the default action
+
+                                        // Collect the form data
+                                        var formData = {
+                                            name: $('#name').val(),
+                                            address: $('#address').val(),
+                                            city: $('#city').val(),
+                                            state: $('#state').val(),
+                                            postcode: $('#postcode').val(),
+                                            phonenumber: $('#phonenumber').val(),
+                                            email: $('#email').val()
+                                        };
+
+                                        // Send the data using AJAX
+                                        $.ajax({
+                                            type: 'POST', // Change the type to your desired method (e.g., POST, GET, etc.)
+                                            url: '/addAddress', // Replace with the URL where you want to send the form data
+                                            data: formData,
+                                            success: function (response) {
+                                                console.log("bbb");
+                                                Swal.fire({
+                                                    position: 'center',
+                                                    icon: 'success',
+                                                    title: 'Address added to Successfully',
+                                                    showConfirmButton: false,
+                                                    timer: 1600
+                                                })
+                                                    .then(() => {
+                                                        location.reload()
+                                                    })
+                                            },
+                                            error: function (xhr, status, error) {
+                                                // Handle the error response
+                                                console.error(xhr.responseText);
+                                            }
+                                        });
+                                    });
+                                });
+
+                                function deleteaddress(addressId) {
+                                    console.log("yyyyyyyyy");
+                                    console.log(addressId);
+                                    const url2 = `/deleteaddress/${addressId}`;
+                                    Swal.fire({
+                                        title: "Are you sure?",
+                                        text: "You won't be able to revert this!",
+                                        icon: "warning",
+                                        showCancelButton: true,
+                                        confirmButtonColor: "#3085d6",
+                                        cancelButtonColor: "#d33",
+                                        confirmButtonText: "ok",
+                                    }).then(async (result) => {
+                                        if (result.isConfirmed) {
+                                            try {
+                                                const response = await fetch(url2, {
+                                                    method: "PUT",
+                                                    headers: {
+                                                        "Content-Type": "application/json",
+                                                    },
+                                                });
+                                                console.log(response);
+                                                if (response.status) {
+                                                    Swal.fire("deleted!", "Address has been deleted.", "success").then(
+                                                        (res) => {
+                                                            window.location.reload();
+                                                        }
+                                                    );
+                                                }
+                                            } catch (error) {
+                                                console.error(`${error.message}`);
+                                            }
+                                        }
+                                    });
+                                }
+
+
+                            </script>

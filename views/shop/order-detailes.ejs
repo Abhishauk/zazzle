@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Zazzle</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <!-- <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg"> -->
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="/css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/magiczoomplus/magiczoomplus.css" type="text/css">
+</head>
+
+
+
+<% var username=username || '' ; %>
+<% var wishListCount=wishListCount|| 0 ; %>
+<% if (username) { %>
+    <%-include('../partials/userheader',{username,wishListCount})-%>
+             
+
+            <% }else{%>
+                <%-include('../partials/userheader')-%>
+                    <%  }  %>
+  
+
+
+    <div class="col-md-12">
+        <div class="breadcrumb-option">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb__links">
+                            <a href="/home"><i class="fa fa-home"></i> Home</a>
+                            <span>view-detailes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="order_review">
+            
+            <div class="mb-20">
+                <h4>Your Orders</h4>
+            </div>
+            <% orderdetailes.forEach(function(product){%>
+                <% let i=0 %>
+                    <div class="card shadow-0 border mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-2 col-sm-2 ">
+                                    <img src="/uploads/<%=product.orderedProduct.productimage[0]%>" alt="">
+
+                                </div>
+                                <div class=" col-md-4 col-sm-3 align-items-center">
+                                    <br>
+                                    <p class=" mb-0">
+                                        <p><b>Product Detailes:</b></p>
+                                        <%=product.orderedProduct.productname%>
+                                    </p>
+                                    <p>
+                                        <%=product.orderedProduct.productcategory %>
+                                    </p>
+                                    <p class="text-muted mb-0 small">Qty: <%=product.orderedItems.quantity%>
+                                    </p>
+                                    <p class="text-muted mb-0 small">&#8377;
+                                        <%=product.orderedProduct.productpromotionalprice%>
+                                    </p>
+                                </div>
+
+                                <div class="col-md-2 col-sm-2  align-items-center">
+                                    <br>
+                                    <p><b>Order Detailes:</b></p>
+                                    <p>OrderDate:<%=product.orderDate %>
+                                    </p>
+                                    <p>PaymentMethod:<%=product.paymentMethod %>
+                                    </p>
+                                    <p>
+                                        <% if(product.orderStatus=='placed' ) {%>
+                                            OrderStatus:
+                                            <span
+                                                class="badge rounded-pill alert-success text-success">
+                                                  <%=product.orderStatus%>
+                                            </span>
+                                            <% }else if (product.orderStatus=='Cancelled' )  { %>
+                                                OrderStatus:
+                                                <span
+                                                    class="badge rounded-pill alert-danger text-danger">
+                                                   <%=product.orderStatus%>
+                                                </span>
+                                                <% }else{ %>
+                                                    OrderStatus:
+                                                    <span
+                                                        class="badge rounded-pill alert-warning text-warning">
+                                                    <%=product.orderStatus%>
+                                                    </span>
+
+                                                <% } %>
+                                        
+                                    </p>
+                                </div>
+                                <div class="col-md-2 col-sm-2 align-items-center">
+                                   <br>
+                                   <p><b>Address:</b></p>
+                                    <p>
+                                        <%=addresses[0].name%><br>
+                                        <%=addresses[0].address%><br>
+                                        <%=addresses[0].city%><br>
+                                        <%=addresses[0].state%><br>
+                                        <%=addresses[0].postcode%><br>
+                                        <%=addresses[0].email%>
+                                    </p>
+                                </div>
+                                <!-- <div class="col-md-2 col-sm-2 align-items-center"><a href="#" class="link-dark">Order Cancel</a></div> -->
+
+
+                            </div>
+                            <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
+                            <!-- <div>
+                            <button onclick="window.location=' /order-list'"
+                                class="btn btn-outline-primary rounded">go to
+                                orders</button>
+                        </div> -->
+                        </div>
+                    </div>
+                    <% i++ %>
+                        <% }) %>
+                        <% if(orderdetailes[0].orderStatus=='placed' ) {%>
+                            <div class="d-flex justify-content-center">
+                                <div class="d-flex gap-2">
+                                  <button onclick="cancelOrder('<%=orderid%>')" type="button" class="btn btn-dark">Order Cancel</button>
+                                  <button onclick="ReturnOrder('<%=orderid%>')" type="button" class="btn btn-danger">Return Order</button>
+                                </div>
+                              </div>
+                              
+                        <% } %>
+                        
+                          
+                            <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </section>
+    </main>
+    <%-include('../partials/userfooter')-%>
+
+        </body>
+
+
+        <!-- Mirrored fro  m wp.alithemes.com/html/evara/evara-frontend/shop-checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:26:06 GMT -->
+
+</html>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function cancelOrder(orderId) {
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, proceed to checkout!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+
+                    type: 'put',
+                    url: `/cancelOrder/${orderId}`,
+                     success: function (response) {
+                        console.log("ghggg");
+                        console.log(response);
+                        if (response.status) {
+                            Swal.fire(
+                                'Cancelled!',
+                                'Order has been Cancelled.',
+                                'success'
+                            )
+                            setTimeout(() => {
+                                window.location.reload()
+                                console.log(response)
+
+                            }, 1200)
+                        } else {
+                            console.log("3333333333333");
+                            console.log(response.response);
+
+                        }
+                    },
+                    error: function (status, error) {
+
+                        console.log(error);
+                    }
+                });
+            }
+        })
+    }
+</script>
+<script>
+    function ReturnOrder(orderId) {
+      console.log("lllll");
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, proceed to checkout!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+
+                    type: 'put',
+                    url: `/ReturnOrder/${orderId}`,
+
+
+                    success: function (response) {
+                        console.log("ghggg");
+                        console.log(response);
+                        if (response.status) {
+                            Swal.fire(
+                                'Return!',
+                                'Order has been Returned.',
+                                'success'
+                            )
+                            setTimeout(() => {
+                                window.location.reload()
+                                console.log(response)
+
+                            }, 1200)
+                        } else {
+                            console.log("3333333333333");
+                            console.log(response.response);
+
+                        }
+                    },
+                    error: function (status, error) {
+
+                        console.log(error);
+                    }
+                });
+            }
+        })
+    }
+</script>
