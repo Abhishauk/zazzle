@@ -135,7 +135,7 @@ ol {
 	bottom: -4px;
 	height: 2px;
 	width: 70px;
-	background: #ca1515;
+	background: #8b15ca;
 	content: "";
 }
 
@@ -1455,17 +1455,18 @@ ol {
 
 .sidebar__filter a {
 	font-size: 14px;
-	color: #0d0d0d;
+	color: #ffffff;
 	text-transform: uppercase;
 	letter-spacing: 2px;
 	font-weight: 700;
 	display: inline-block;
 	padding: 5px 16px 5px 24px;
-	border: 2px solid #ff0000;
+	/* border: 2px solid #8b15ca; */
 	position: absolute;
 	right: 0;
 	bottom: -5px;
 	border-radius: 2px;
+	background: #000;
 }
 
 .filter-range-wrap .range-slider .price-input {
@@ -1516,34 +1517,34 @@ ol {
 	height: 14px;
 	width: 14px;
 	border-radius: 50%;
-	background: #ca1515;
+	background: #8b15ca;
 	border: none;
 	outline: none;
 	cursor: pointer;
 }
 
 .filter-range-wrap .price-range .ui-slider-range {
-	background: #ca1515;
+	background: #8b15ca;
 	border-radius: 0;
 }
 
-.sidebar__sizes,
+.sidebar__prices,
 .sidebar__color {
 	margin-bottom: 40px;
 }
 
-.sidebar__sizes .section-title,
+.sidebar__prices .section-title,
 .sidebar__color .section-title {
 	margin-bottom: 35px;
 }
 
-.sidebar__sizes .section-title h4,
+.sidebar__prices .section-title h4,
 .sidebar__color .section-title h4 {
 	font-size: 18px;
 }
 
-.sidebar__sizes .size__list label,
-.sidebar__color .size__list label {
+.sidebar__prices .price__list label,
+.sidebar__color .cl__list label {
 	display: block;
 	padding-left: 20px;
 	font-size: 14px;
@@ -1553,25 +1554,25 @@ ol {
 	cursor: pointer;
 }
 
-.sidebar__sizes .size__list label input,
-.sidebar__color .size__list label input {
+.sidebar__prices .price__list label input,
+.sidebar__color .cl__list label input {
 	position: absolute;
 	visibility: hidden;
 }
 
-.sidebar__sizes .size__list label input:checked~.checkmark,
-.sidebar__color .size__list label input:checked~.checkmark {
-	border-color: #ca1515;
+.sidebar__prices .price__list label input:checked~.checkmark,
+.sidebar__color .cl__list label input:checked~.checkmark {
+	border-color:#8b15ca;
 }
 
-.sidebar__sizes .size__list label input:checked~.checkmark:after,
-.sidebar__color .size__list label input:checked~.checkmark:after {
-	border-color: #ca1515;
+.sidebar__prices .price__list label input:checked~.checkmark:after,
+.sidebar__color .cl__list label input:checked~.checkmark:after {
+	border-color:#8b15ca;
 	opacity: 1;
 }
 
-.sidebar__sizes .size__list label .checkmark,
-.sidebar__color .size__list label .checkmark {
+.sidebar__prices .price__list label .checkmark,
+.sidebar__color .cl__list label .checkmark {
 	position: absolute;
 	left: 0;
 	top: 4px;
@@ -1581,8 +1582,8 @@ ol {
 	border-radius: 2px;
 }
 
-.sidebar__sizes .size__list label .checkmark:after,
-.sidebar__color .size__list label .checkmark:after {
+.sidebar__prices .price__list label .checkmark:after,
+.sidebar__color .cl__list label .checkmark:after {
 	position: absolute;
 	left: 0px;
 	top: -2px;

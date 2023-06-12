@@ -6,10 +6,10 @@ const product = require ("../models/productmodels")
 dotenv.config();
 
 module.exports={
-    category: async (req, res) => {
+    category: async (body) => {
         console.log("zlzlzlzlzlaaa");
         try {
-          const category = req.params.id;
+          const category = body;
           console.log(category);
           const products = await product.find({ productcategory: category });
 
@@ -19,7 +19,7 @@ module.exports={
           res.redirect('/shop?array=' + encodeURIComponent(JSON.stringify(products)));
         } catch (err) {
           console.error(err);
-          res.status(500).json({ error: "Internal server error" });
+          // res.status(500).json({ error: "Internal server error" });
         }
       },
     }

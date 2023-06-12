@@ -55,6 +55,7 @@ module.exports = {
         productweight: body.weight,
         productcategory: body.category,
         productQuantity:body.quantity,
+        productColor:body.colour,
         productimage: images.map(images => images.filename)
       });
       await newproduct.save();
@@ -127,7 +128,8 @@ module.exports = {
               productregularprice: body.regularprice,
               productdescription: body.description,
               productQuantity: body.quantity,
-              productcategory: body.category
+              productcategory: body.category,
+              productColor:body.colour
             }
           }
         );
@@ -145,6 +147,7 @@ module.exports = {
               productdescription: body.description,
               productQuantity: body.quantity,
               productcategory: body.category,
+              productColor:body.colour,
               productimage: file.map(file => file.filename)
             }
           }

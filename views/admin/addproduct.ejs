@@ -93,12 +93,12 @@
                                     id="product_quantity">
                                 <span class="text-danger " style="font-size: 12px; margin-left: 10px;" id="quantityError"></span>
                             </div>
-                            <!-- <div class="mb-4">
+                            <div class="mb-4">
                                 <label for="product_name" class="form-label">colour</label>
-                                <input type="text" name="colour" placeholder="$" class="form-control"
+                                <input type="text" name="colour" class="form-control"
                                     id="product_colour">
                                 <span class="text-danger " style="font-size: 12px; margin-left: 10px;" id="colourError"></span>
-                            </div> -->
+                            </div>
                             <!-- </form> -->
                         </div>
                     </div> <!-- card end// -->
@@ -163,6 +163,7 @@
             const qtyInput = document.getElementById('product_quantity');
             const weigInput = document.getElementById('product_weig');
             const imageInput = document.getElementById('product_image');
+            const colourInput = document.getElementById('product_colour')
 
             const nameError = document.getElementById('nameError');
             const descError = document.getElementById('descError');
@@ -171,13 +172,13 @@
             const qtyError = document.getElementById('quantityError');
             const weigError = document.getElementById('weigError');
             const imageError = document.getElementById('imageError');
-            // const colourError = document.getElementById('colourError')
+            const colourError = document.getElementById('colourError')
 
             // Regular expressions for validation
             const nameRegex = /^[A-Za-z\s]+$/;
             const descRegex = /^[A-Za-z\s]+$/;
             const priceRegex = /^(?!0$)\d+(\.\d{1,2})?$/;
-
+            const colourRegex = /^[A-Za-z\s]+$/;
             const qtyRegex = /^\d+$/;
             const weightRegex = /^\d+(\.\d{1,2})?$/;
 
@@ -247,6 +248,16 @@
                     isValid = false;
                 } else {
                     imageError.innerHTML = '';
+                }
+                
+                if (colourInput.value.trim() === '') {
+                    colourError.innerHTML = 'Please enter the product colour';
+                    isValid = false;
+                } else if (!colourRegex.test(colourInput.value.trim())) {
+                    colourError.innerHTML = 'Please enter a valid';
+                    isValid = false;
+                } else {
+                    colourError.innerHTML = '';
                 }
 
                 if (isValid) {

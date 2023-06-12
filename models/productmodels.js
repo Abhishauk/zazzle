@@ -63,10 +63,10 @@ const productSchema = new mongoose.Schema({
     type : String,
     require : true
     },
-//   productColor:{
-//     type : String,
-//     require : true
-// }
+  productColor:{
+    type : String,
+    require : true
+}
   // productstatus: {
   //   type: Boolean,
   //   default: true,

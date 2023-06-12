@@ -25,6 +25,8 @@ const {
 const orderhelper = require("../helpers/orderhelper");
 const { log } = require("util");
 const couponmodels = require("../models/couponmodels");
+const categorycontroller = require("./categorycontroller");
+const { categories } = require("./admincontroller");
 dotenv.config();
 module.exports = {
   home: async (req, res, next) => {
@@ -139,7 +141,7 @@ module.exports = {
   },
   usershop: async (req, res) => {
     try {
-      const count = parseInt(req.query.count) || 4;
+      const count = parseInt(req.query.count) || 6;
       const page = parseInt(req.query.page) || 1;
       const totalCount = await product.countDocuments();
       const startIndex = (page - 1) * count;
@@ -726,8 +728,7 @@ module.exports = {
       console.log("productId ", productId);
       console.log("user ", user);
 
-      let response = await wishlisthelper.addItem
-      ToWishList(productId, user);
+      let response = await wishlisthelper.addItemToWishList(productId, user);
 
       res.json(response);
     } catch (error) {
@@ -766,5 +767,54 @@ module.exports = {
   editaddress: async (req, res) => {
     try {
     } catch (error) {}
+  },
+  filter: async (req, res) => {
+    try {
+      console.log("jjjjjjjj");
+      console.log(req.body);
+  
+      // Retrieve the filter values from the request body
+      var selectedCategories = req.body["categories[]"];
+      var selectedPriceRanges = req.body["priceRanges[]"];
+      var selectedColors = req.body["colors[]"];
+  
+      console.log(selectedCategories);
+      console.log(selectedPriceRanges);
+      console.log(selectedColors);
+  
+      // Construct the filter query based on the selected values
+      var filterQuery = {};
+  
+      if (selectedCategories && selectedCategories !=="") {
+        filterQuery.productcategory = { $in: selectedCategories };
+      }
+  
+      if (selectedPriceRanges && selectedPriceRanges !=="") {
+        let [minPrice, maxPrice] = selectedPriceRanges.split("-");
+        filterQuery.productpromotionalprice = {
+          $gte: parseInt(minPrice),
+          $lte: parseInt(maxPrice)
+        };
+      }
+      
+ 
+  
+      if (selectedColors && selectedColors !=="") {
+        filterQuery.productColor = { $in: selectedColors };
+      }
+  
+      // Find the filtered products from the database
+      var filteredProducts = await product.find(filterQuery);
+  
+      console.log(filteredProducts);
+  
+      // Return the filtered results as JSON
+      res.json(filteredProducts);
+     
+    } catch (error) {
+      console.log('Error occurred while filtering results:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
   }
-};
+  
+}

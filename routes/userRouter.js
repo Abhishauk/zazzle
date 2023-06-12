@@ -47,6 +47,7 @@ router.post('/add-to-wishList',userCheck,usercontroller.addToWishList);
 router.put('/remove-from-wishList/:id',usercontroller.removeFromWishList)
 router.put('/deleteaddress/:id',usercontroller.deleteaddress)
 router.put('/editaddress/:id',usercontroller.editaddress)
+router.post('/filter-results',usercontroller.filter)
 
 // router.get('/payment-failed',usercontroller.paymentfailed)
 // router.get('/categoryhoddie',categorycontroller.categoryhoddie)
