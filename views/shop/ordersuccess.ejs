@@ -25,65 +25,63 @@
         <!-- Template CSS -->
         <link rel="stylesheet" href="assets/css/main.css">
     </head>
+<main>
+    <section class="mt-50 mb-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <table class="table shopping-summery text-center">
+                            <thead>
+                                <tr class="main-heading">
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Total</th>
+                                    <!-- <th scope="col" colspan="3"></th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(let i=0;i<orders.length;i++){%>
 
-    <div class="col-md-12">
-        <div class="order_review">
-            <div class="mb-20">
-                <h4>Your Orders</h4>
-            </div>
-             <div class="table-responsive order_table text-center">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th colspan="2">Product</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-              
-            <% for(let i=0;i<orders.length;i++){%>
-                <div class="card-first shadow-0 border mb-4">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-12 col-md-2 col-sm-2 ">
-                                <img src="uploads/<%=orders[i].orderedProduct.productimage[0]%>" alt="">
-
-                            </div>
-                            <div class=" col-md-4 col-sm-3 align-items-center">
-                                <p class=" mb-0">
-                                    <%=orders[i].orderedProduct.productname%>...
-                                </p>
-                            </div>
-
-                            <div class="col-md-2 col-sm-2  align-items-center">
-                                <p class="text-muted mb-0 small">Qty: <%=orders[i].orderedItems.quantity%>
-                                </p>
-                            </div>
-                            <div class="col-md-2 col-sm-2 align-items-center">
-                                <p class="text-muted mb-0 small">&#8377;<%=orders[i].orderedProduct.productpromotionalprice%>
-                                </p>
-                            </div>
+                                <tr>
+                                    <td class="image product-thumbnail">  <img src="uploads/<%=orders[i].orderedProduct.productimage[0]%>"></td>
+                                    <td class="product-des product-name">
+                                        <h5 class="product-name"><a href="shop-product-right.html">  <%=orders[i].orderedProduct.productname%></a></h5>
+                                        <p class="font-xs"><%=orders[i].orderedProduct.productdescription %>
+                                        </p>
+                                    </td>
+                                    <td class="text-center" data-title="quantity">
+                                        <span class="color3 font-weight-bold"><%=orders[i].orderedItems.quantity%>
+                                        </span>
+                                    </td>
+                                    <td class="price" data-title="Price"><span><%=orders[i].orderedProduct.productpromotionalprice%>
+                                    </span></td>
+                                    <td class="text-center" data-title="total">
+                                        <span class="color3 font-weight-bold">₹<%=total%></span>
+                                    </td>
+                                    <!-- <td class="text-right" data-title="Cart">
+                                        <button class="btn btn-sm"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart</button>
+                                    </td> -->
+                                    <!-- <td class="action" data-title="Remove"><a href="#"><i class="fi-rs-trash"></i></a></td> -->
+                                </tr>
+                                <% } %>
+                            </tbody>
+                          
+                        </table>
+                        <div class="d-flex justify-content-center">
+                            <button onclick="window.location=' /order-list'"
+                                class="btn btn-outline-primary rounded">go to
+                                orders</button>
                         </div>
+                        <!-- <div class="bt-1 border-color-1 mt-30 mb-30"></div> -->
+
                         <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
-                       
                     </div>
                 </div>
-                <% } %>
-                <div> 
-                    <h6>SubTotal<h6>
-                    <p >₹<%=total%></p>
-                </div>
-                <div>
-                    <button onclick="window.location=' /order-list'"
-                        class="btn btn-outline-primary rounded">go to
-                        orders</button>
-                </div>
-                    <div class="bt-1 border-color-1 mt-30 mb-30"></div>
-
+            </div>
         </div>
-    </div>
-    </div>
-    </div>
     </section>
     </main>
     <%-include('../partials/userfooter')-%>

@@ -29,6 +29,30 @@
     <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/css/style.css" type="text/css">
     <link rel="stylesheet" href="/magiczoomplus/magiczoomplus.css" type="text/css">
+
+    <style>
+        .order-details, .address-details, .order-status {
+  background-color: #f7f7f7;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.order-details h3, .address-details h3, .order-status h3 {
+  color: #333;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.order-details p, .address-details p, .order-status p {
+  margin-bottom: 5px;
+}
+
+.order-status .badge {
+  font-size: 14px;
+  padding: 5px 10px;
+}
+
+    </style>
 </head>
 
 
@@ -58,106 +82,121 @@
                 </div>
             </div>
         </div>
-        <div class="order_review">
-            
-            <div class="mb-20">
-                <h4>Your Orders</h4>
-            </div>
-            <% orderdetailes.forEach(function(product){%>
-                <% let i=0 %>
-                    <div class="card shadow-0 border mb-4">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-12 col-md-2 col-sm-2 ">
-                                    <img src="/uploads/<%=product.orderedProduct.productimage[0]%>" alt="">
-
-                                </div>
-                                <div class=" col-md-4 col-sm-3 align-items-center">
-                                    <br>
-                                    <p class=" mb-0">
-                                        <p><b>Product Detailes:</b></p>
-                                        <%=product.orderedProduct.productname%>
-                                    </p>
-                                    <p>
-                                        <%=product.orderedProduct.productcategory %>
-                                    </p>
-                                    <p class="text-muted mb-0 small">Qty: <%=product.orderedItems.quantity%>
-                                    </p>
-                                    <p class="text-muted mb-0 small">&#8377;
-                                        <%=product.orderedProduct.productpromotionalprice%>
-                                    </p>
-                                </div>
-
-                                <div class="col-md-2 col-sm-2  align-items-center">
-                                    <br>
-                                    <p><b>Order Detailes:</b></p>
-                                    <p>OrderDate:<%=product.orderDate %>
-                                    </p>
-                                    <p>PaymentMethod:<%=product.paymentMethod %>
-                                    </p>
-                                    <p>
-                                        <% if(product.orderStatus=='placed' ) {%>
-                                            OrderStatus:
-                                            <span
-                                                class="badge rounded-pill alert-success text-success">
-                                                  <%=product.orderStatus%>
-                                            </span>
-                                            <% }else if (product.orderStatus=='Cancelled' )  { %>
-                                                OrderStatus:
-                                                <span
-                                                    class="badge rounded-pill alert-danger text-danger">
-                                                   <%=product.orderStatus%>
-                                                </span>
-                                                <% }else{ %>
-                                                    OrderStatus:
-                                                    <span
-                                                        class="badge rounded-pill alert-warning text-warning">
-                                                    <%=product.orderStatus%>
-                                                    </span>
-
-                                                <% } %>
-                                        
-                                    </p>
-                                </div>
-                                <div class="col-md-2 col-sm-2 align-items-center">
-                                   <br>
-                                   <p><b>Address:</b></p>
-                                    <p>
-                                        <%=addresses[0].name%><br>
-                                        <%=addresses[0].address%><br>
-                                        <%=addresses[0].city%><br>
-                                        <%=addresses[0].state%><br>
-                                        <%=addresses[0].postcode%><br>
-                                        <%=addresses[0].email%>
-                                    </p>
-                                </div>
-                                <!-- <div class="col-md-2 col-sm-2 align-items-center"><a href="#" class="link-dark">Order Cancel</a></div> -->
-
-
-                            </div>
-                            <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
-                            <!-- <div>
-                            <button onclick="window.location=' /order-list'"
-                                class="btn btn-outline-primary rounded">go to
-                                orders</button>
-                        </div> -->
-                        </div>
-                    </div>
-                    <% i++ %>
-                        <% }) %>
-                        <% if(orderdetailes[0].orderStatus=='placed' ) {%>
-                            <div class="d-flex justify-content-center">
-                                <div class="d-flex gap-2">
-                                  <button onclick="cancelOrder('<%=orderid%>')" type="button" class="btn btn-dark">Order Cancel</button>
-                                  <button onclick="ReturnOrder('<%=orderid%>')" type="button" class="btn btn-danger">Return Order</button>
-                                </div>
-                              </div>
-                              
-                        <% } %>
-                        
-                          
-                            <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+    <div class="order_review">
+    <div class="mb-20 d-flex justify-content-center">
+        <h4>Your Orders</h4>
+    </div>
+    <!-- Order Details and Address (Displayed Once) -->
+    <div class="card shadow-0 border mb-4" style="background-color: #f9f9f9;">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 col-sm-4">
+                  <!-- Display Order Details and Address Here -->
+                  <div class="order-details">
+                    <h3>Order Details</h3>
+                    <p>
+                      <strong>Order Date:</strong>
+                      <%= new Date(orderdetailes[0].orderDate).toLocaleString('en-IN', {
+                        timeZone: 'Asia/Kolkata',
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        second: 'numeric'
+                      }) %>
+                    </p>
+                    <p><strong>Payment Method:</strong> <%= orderdetailes[0].paymentMethod %></p>
+                    <p><strong>Total Amount:</strong> <%= orderdetailes[0].totalAmount %></p>
+                  </div>
+                </div>
+                
+                <!-- Display Address Details Here -->
+                <div class="col-md-4 col-sm-4 align-items-center">
+                  <div class="address-details">
+                    <h3>Address</h3>
+                    <p>
+                      <strong>Name:</strong> <%= addresses[0].name %><br>
+                      <strong>Address:</strong> <%= addresses[0].address %><br>
+                      <strong>City:</strong> <%= addresses[0].city %><br>
+                      <strong>State:</strong> <%= addresses[0].state %><br>
+                      <strong>Postal Code:</strong> <%= addresses[0].postcode %><br>
+                      <strong>Email:</strong> <%= addresses[0].email %>
+                    </p>
+                  </div>
+                </div>
+                
+                <div class="col-md-4 col-sm-4 align-items-center">
+                  <div class="order-status">
+                    <h3>Order Status</h3>
+                    <p>
+                      <% if (orderdetailes[0].orderStatus == 'placed') { %>
+                        <span class="badge rounded-pill alert-success text-success">
+                          <%= orderdetailes[0].orderStatus %>
+                        </span>
+                      <% } else if (orderdetailes[0].orderStatus == 'Cancelled') { %>
+                        <span class="badge rounded-pill alert-danger text-danger">
+                          <%= orderdetailes[0].orderStatus %>
+                        </span>
+                      <% } else { %>
+                        <span class="badge rounded-pill alert-warning text-warning">
+                          <%= orderdetailes[0].orderStatus %>
+                        </span>
+                      <% } %>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
         </div>
+    </div>
+    <!-- Product Images and Prices (Displayed in a Loop) -->
+    <% orderdetailes.forEach(function(product) { %>
+    <div class="card shadow-0 border mb-4 ">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-md-2 col-sm-2">
+                    <img src="/uploads/<%= product.orderedProduct.productimage[0] %>" alt="">
+                </div>
+                <div class="col-md-4 col-sm-3 align-items-center">
+                    <br>
+                    <p class="mb-0">
+                        <p><b>Product Details:</b></p>
+                        <%= product.orderedProduct.productname %>
+                    </p>
+                    <p>
+                        <%= product.orderedProduct.productcategory %>
+                    </p>
+                    <p class="text-muted mb-0 small">Qty: <%= product.orderedItems.quantity %></p>
+                    <p class="text-muted mb-0 small">&#8377; <%= product.orderedProduct.productpromotionalprice %></p>
+                </div>
+                
+
+
+            </div>
+        </div>
+    </div>
+    <% }) %>
+    <!-- Additional Actions Based on Order Status -->
+    <% if (orderdetailes[0].orderStatus == 'placed') { %>
+    <div class="d-flex justify-content-center">
+        <div class="d-flex gap-2">
+            <button onclick="cancelOrder('<%= orderid %>')" type="button" class="btn btn-dark">Order Cancel</button>
+        </div>
+    </div>
+    <% } else if (orderdetailes[0].orderStatus == 'delivered') { %>
+        <div class="d-flex justify-content-center">
+            <div class="d-flex gap-2">
+                <button onclick="ReturnOrder('<%= orderid %>')" type="button" class="btn btn-danger">Return Order</button>
+            </div>
+        </div>
+        <% } %>
+        <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+    </div>
+    
+
+            
+        
     </div>
     </div>
     </div>

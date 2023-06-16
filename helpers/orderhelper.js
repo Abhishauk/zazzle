@@ -33,10 +33,15 @@ module.exports = {
             let paymentMethod = order.payment_method;
             let addressId = order.address_id;
             let orderedItems = cartItems
+            let couponAmount = order.couponAmount;
             console.log("77777777");
             console.log("orderedItems", orderedItems);
 
             console.log("orderedItems orderHelper ", orderedItems);
+            if(order.couponAmount){
+                couponAmount=order.couponAmount
+                console.log("lklklkl",couponAmount);
+            }
             let ordered = new orderSchema({
                 user: userId,
                 address: addressId,
@@ -44,7 +49,9 @@ module.exports = {
                 totalAmount: totalAmount,
                 paymentMethod: paymentMethod,
                 orderStatus: status,
-                orderedItems: orderedItems.products
+                orderedItems: orderedItems.products,
+                coupon:couponAmount
+
             })
             await ordered.save();
             console.log(ordered);

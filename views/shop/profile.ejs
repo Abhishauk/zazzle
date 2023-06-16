@@ -113,6 +113,12 @@
                                                                     aria-selected="true"><i
                                                                         class="fi-rs-user mr-10"></i>Account details</a>
                                                             </li>
+                                                                    <li class="nav-item">
+                                            <a class="nav-link" id="track-wallet-tab" data-bs-toggle="tab"
+                                                href="#track-wallet" role="tab" aria-controls="track-wallet"
+                                                aria-selected="false"><i
+                                                    class="fi-rs-shopping-cart-check mr-10"></i>Wallet</a>
+                                        </li>
                                                             <!-- <li class="nav-item">
                                             <a class="nav-link" href="page-login-register.html"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
                                         </li> -->
@@ -488,7 +494,7 @@
                                                         <div class="card-body">
 
                                                             <td>
-                                                                <%=user.name %>
+                                                                <%=user.username%>
                                                             </td><br>
                                                             <td>
                                                                 <%=user.phonenumber %>
@@ -501,6 +507,23 @@
 
                                                             <!-- <p>New York</p> -->
                                                             <a href="#" class="btn-small">Edit</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="track-wallet" role="tabpanel"
+                                                    aria-labelledby="account-detail-tab">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h5>Wallet</h5>
+                                                        </div>
+                                                        <div class="card-body">
+
+                                                            <td>
+                                                                <p>wallet balance: <%= walletBalance %></p>
+                                                            </td>
+
+                                                            <!-- <p>New York</p> -->
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>

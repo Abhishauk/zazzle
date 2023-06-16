@@ -7,15 +7,21 @@ const cart = require("../models/cartmodels");
 const orderModel = require("../models/ordermodels");
 const wishlistModel = require("../models/wishlistmodel");
 const addressModal = require("../models/addressmodels");
+const wallet = require("../models/walletmodels");
 const orderHepler = require("../helpers/orderhelper");
 const couponhelper = require("../helpers/couponhelper");
 const wishlisthelper = require("../helpers/wishlisthelper");
 const producthelper = require("../helpers/producthelper");
+const wallethelper = require("../helpers/wallethelper");
 const ObjectId = require("mongoose").Types.ObjectId;
 const Razorpay = require("razorpay");
+
+const key_id=process.env.key_id;
+const key_secret=process.env.key_secret;
+
 var instance = new Razorpay({
-  key_id: "rzp_test_gFlxCSnUJ3aK5l",
-  key_secret: "nvm1ozXmKUEnyqNOjDJCMY80"
+  key_id,
+  key_secret
 });
 
 const dotenv = require("dotenv");
@@ -207,6 +213,7 @@ module.exports = {
     }
   },
   checkOTP: function(req, res) {
+    console.log("lmlmlmlmlml");
     userhelper.checkOTP(req.body).then(response => {
       if (response.status) {
         let phonenumber = response.validUser.phonenumber;
@@ -251,7 +258,7 @@ module.exports = {
     try {
       let userid = req.params.id;
       userhelper.resetpasspost(req.body, userid).then(response => {
-        res.render("shop/userlogin.ejs");
+        res.redirect("/login");
       });
     } catch (error) {}
   },
@@ -334,6 +341,7 @@ module.exports = {
   //   }
   // }
   checkout: async (req, res) => {
+    console.log("plplpl");
     let cartId = req.params.id;
     let user = req.session.userid;
     if (req.session.user) {
@@ -358,6 +366,10 @@ module.exports = {
     var wishListCount = await wishlisthelper.getWishListCount(userId);
     var cartCount = await userhelper.getCartCount(userId);
     console.log(wishListCount);
+    let walletBalance = await wallethelper.walletBalance(userId)
+        walletBalance = currencyFormat(walletBalance);
+        console.log("8888");
+        console.log(walletBalance);
     let coupon = await couponmodels.find();
     res.render("shop/checkout.ejs", {
       user,
@@ -367,7 +379,8 @@ module.exports = {
       username,
       wishListCount,
       cartCount,
-      coupon
+      coupon,
+      walletBalance
     });
   },
   addAddress: async (req, res) => {
@@ -440,10 +453,31 @@ module.exports = {
 
       console.log("555");
       console.log(orderId);
+      await producthelper.decreaseStock(cartItems);
       if (req.body.payment_method == "COD") {
-        await producthelper.decreaseStock(cartItems);
         res.status(202).json({ status: true, orderId: orderId });
-      } else {
+      }
+      else if (req.body.payment_method == 'wallet') {
+        let isPaymentDone = await wallethelper.payUsingWallet(userId, totalAmount);
+        if (isPaymentDone) {
+
+           await orderModel.findOneAndUpdate(
+            { _id: orderId },
+            {
+              $set: { 
+                orderStatus: "placed"
+              }
+            })
+          // await producthelper.decreaseStock(cartItems);
+          console.log("vannu");
+          console.log(orderId);
+          res.status(202).json({status:true, orderId:orderId})
+        }
+         else {
+            res.status(200).json({ payment_method: 'wallet', error: true, msg: "Insufficient Balance in wallet" })
+        }
+      }
+       else {
         await userhelper
           .generaterazorpay(orderId, totalAmount)
           .then(response => {
@@ -451,6 +485,7 @@ module.exports = {
             res.status(202).json({ response, status: false });
           });
       }
+      
     } catch (error) {
       console.log(error);
     }
@@ -618,46 +653,74 @@ module.exports = {
       var wishListCount = await wishlisthelper.getWishListCount(userId);
       var cartCount = await userhelper.getCartCount(userId);
       console.log(wishListCount);
+      let walletBalance = await wallethelper.walletBalance(userId)
+      walletBalance = currencyFormat(walletBalance);
+      console.log("wallet",walletBalance);
+
       res.render("shop/profile.ejs", {
         orders,
         username,
         address,
         cartCount,
         wishListCount,
-        user
+        user,
+        walletBalance
       });
     } catch (error) {}
   },
-  cancelOrder: async (req, res) => {
+  cancelOrder:async(req,res)=>{ 
     try {
-      let orderId = req.params.id;
+      let orderId=req.params.id
+      let userId=req.session.userid._id
+      console.log("anamaamana");
       console.log(orderId);
-      await orderModel.updateOne(
+     const cancelledResponse= await orderModel.findOneAndUpdate(
         { _id: orderId },
         {
-          $set: {
+          $set: { 
             orderStatus: "Cancelled"
           }
+        })
+        console.log("mmmmmmmmm",cancelledResponse); 
+
+        if(cancelledResponse.paymentMethod!='COD'){
+          await wallethelper.addMoneyToWallet(userId,cancelledResponse.totalAmount);
         }
-      );
-      res.json({ status: true });
-    } catch (error) {}
-  },
-  ReturnOrder: async (req, res) => {
-    try {
-      let orderId = req.params.id;
+        res.json({status:true})
+      
+
+         
+    } catch (error) {
+        
+    }
+ },
+ ReturnOrder:async(req,res)=>{
+  try {
+      let orderId=req.params.id
+      let userId=req.session.userid._id
+      console.log("anamaamana");
       console.log(orderId);
-      await orderModel.updateOne(
+
+      const returnResponse= await orderModel.findOneAndUpdate(
         { _id: orderId },
         {
           $set: {
             orderStatus: "Return"
           }
+        })
+
+        if(returnResponse.paymentMethod!='COD'){
+          await wallethelper.addMoneyToWallet(userId,returnResponse.totalAmount);
         }
-      );
-      res.json({ status: true });
-    } catch (error) {}
-  },
+
+        res.json({status:true})
+    
+
+         
+    } catch (error) {
+        
+    }
+},
   // Import the required modules
 
   // Add the search route
@@ -678,23 +741,41 @@ module.exports = {
       res.status(500).send("Internal Server Error");
     }
   },
-  applyCoupon: async (req, res) => {
-    try {
-      const user = req.session.userid;
-      console.log(user);
-      const { totalAmount, couponCode } = req.body;
-      console.log(couponCode);
-      console.log(totalAmount);
-      console.log(totalAmount);
-      const response = await couponhelper.applyCoupon(
-        user._id,
-        couponCode,
-        totalAmount
-      );
+  // applyCoupon: async (req, res) => {
+  //   try {
+  //     const user = req.session.userid;
+  //     console.log(user);
+  //     const { totalAmount, couponCode } = req.body;
+  //     console.log(couponCode);
+  //     console.log(totalAmount);
+  //     console.log(totalAmount);
+  //     const response = await couponhelper.applyCoupon(
+  //       user._id,
+  //       couponCode,
+  //       totalAmount
+  //     );
 
-      console.log(response);
-      res.json(response);
-    } catch (error) {}
+  //     console.log(response);
+  //     res.json(response);
+  //   } catch (error) {}
+  // },
+
+  applyCoupon :async (req, res) => {
+    try {
+        if(req.body.totalAmount <500){
+          res.json({ status: false, message: "Coupon available only for the 500₹ abouve purchase" })
+        }
+        const user = req.session.userid
+        console.log(user);
+        const { totalAmount, couponCode } = req.body;
+  
+        const response = await couponhelper.applyCoupon(user._id, couponCode,totalAmount);
+  
+        res.json(response);
+  
+    } catch (error) {
+  
+    }
   },
   wishlist: async (req, res) => {
     try {
@@ -710,11 +791,13 @@ module.exports = {
       console.log("wiaashlist items");
       console.log(wishList);
       console.log("wiaashlist items");
+     
       res.render("shop/wishlist.ejs", {
         wishList,
         username,
         cartCount,
-        wishListCount
+        wishListCount,
+       
       });
     } catch (error) {
       res.redirect("404");
@@ -817,4 +900,7 @@ module.exports = {
     }
   }
   
+}
+function currencyFormat(amount) {
+  return Number(amount).toLocaleString('en-in', { style: 'currency', currency: 'INR', minimumFractionDigits: 0 })
 }

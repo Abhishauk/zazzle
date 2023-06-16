@@ -13,7 +13,7 @@ const client = require('twilio')(accountSid, authToken);
 const twilioFunctions = {
   
     generateOTP: async (phonenumber) => {
-
+      console.log("ppppoooooooo");
       client,
       
       

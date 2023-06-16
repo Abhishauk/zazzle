@@ -16,7 +16,7 @@ module.exports={
                 console.log("rrrrrrrrrrrrrrrrrrr");
                 console.log(product);
                 // console.log("decreaseStock1",product);
-                const isProductAvailableInStock = (product.productQuantity - cartItems.products[i].quantity) > 0 ? true : false;
+                const isProductAvailableInStock = (product.productQuantity - cartItems.products[i].quantity) >= 0 ? true : false;
                 console.log("{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{");
                 console.log(isProductAvailableInStock); 
                 if (isProductAvailableInStock) {

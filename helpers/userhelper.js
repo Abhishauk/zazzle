@@ -11,13 +11,17 @@ const cart = require("../models/cartmodels");
 const orderModel = require("../models/ordermodels");
 const addressModal = require("../models/addressmodels");
 const accountSid = "AC5249df9aa44e6846abc808d07350594b";
-const authToken = "e8630324c73bd5ba5ece4c4e9ec11e16";
+const authToken = "330ec7d38f17b216f78127ef14e648a1";
 const client = require("twilio")(accountSid, authToken);
 const ObjectId = require("mongoose").Types.ObjectId;
 const Razorpay = require("razorpay");
+ 
+const key_id=process.env.key_id;
+const key_secret=process.env.key_secret;
+
 var instance = new Razorpay({
-  key_id: "rzp_test_gFlxCSnUJ3aK5l",
-  key_secret: "nvm1ozXmKUEnyqNOjDJCMY80"
+  key_id,
+  key_secret
 });
 
 dotenv.config();
@@ -104,6 +108,7 @@ module.exports = {
     });
   },
   checkOTP: function(body) {
+    console.log("25222525");
     return new Promise(function(resolve, reject) {
       try {
         user
@@ -113,9 +118,11 @@ module.exports = {
               reject(err);
             } else {
               if (validUser) {
+                console.log("//][][");
                 console.log(validUser);
 
                 twilioFunctions.generateOTP(validUser.phonenumber);
+                console.log("777778");
                 const msg1 = "OTP SENT!!";
                 resolve({ status: true, validUser, msg1 });
               } else {
@@ -275,7 +282,7 @@ module.exports = {
       const quantity = productdetail.productQuantity;
 
       if (quantity < 1) {
-        return false;
+        return{response:true,limit:true, msg:"Product out of stock"}
       }
 
       let added;
@@ -370,7 +377,7 @@ module.exports = {
       let productdetailes = await product.findById(Productid);
       return productdetailes;
     } catch (error) {
-      nsole.error(error);
+      console.error(error);
     }
   },
   changeProductQuantity: async body => {

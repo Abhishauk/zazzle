@@ -361,14 +361,8 @@ addCoupon:(couponData) => {
   return new Promise(async (resolve, reject) => {
 
       const dateString = couponData.couponExpiry;
-      const [day, month, year] = dateString.split(/[-/]/);
+      const [year,month,day] = dateString.split(/[-/]/);
       const date = new Date(`${year}-${month}-${day}`);
-
-
-
-
-
-      
       const convertedDate = date.toISOString();
 
       let couponCode=voucherCode.generate({
@@ -390,7 +384,8 @@ addCoupon:(couponData) => {
 
       await coupon.save()
           .then(() => {
-              resolve(coupon._id)
+            console.log("resss");
+              resolve({status:true})
           })
           .catch((error) => {
               reject(error)
@@ -473,8 +468,11 @@ activeOffer: async (body) => {
    let products=await product.find({productcategory:categoryname})
 
    for(let product of products){
+    if(product.productpromotionalprice>=500){
     product.productpromotionalprice=product.productpromotionalprice-discount
+    product.productoffer=true
     await product.save()
+    }
    }
 
    
@@ -500,6 +498,7 @@ deactiveOffer: async (body) => {
 
    for(let product of products){
     product.productpromotionalprice=product.productpromotionalprice+discount
+    product.productoffer=false
     await product.save()
    }
 

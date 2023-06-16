@@ -66,7 +66,11 @@ const productSchema = new mongoose.Schema({
   productColor:{
     type : String,
     require : true
-}
+},
+productoffer:{
+  type: Boolean,
+  default:false,
+},
   // productstatus: {
   //   type: Boolean,
   //   default: true,

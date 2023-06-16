@@ -10,6 +10,8 @@ const orderhelper = require("../helpers/orderhelper");
 const Order = require("../models/ordermodels");
 const Offer = require("../models/offermodels");
 const ObjectId = require("mongoose").Types.ObjectId;
+const admin = require("../models/adminmodels")
+const bcrypt = require('bcrypt')
 dotenv.config();
 module.exports = {
   adminlogin: function(req, res) {
@@ -19,19 +21,64 @@ module.exports = {
       console.error(err);
     }
   },
+  // adminpostlogin: async (req, res) => {
+  //   try {
+  //     if (req.body.email == "admin@gmail.com" && req.body.password == "123") {
+  //       console.log(req.body);
+  //       req.session.admin = true;
+  //       res.redirect("/admin/adminpanel");
+  //     } else {
+  //       let msg = "invalid email or password";
+  //       res.render("admin/adminlogin", { msg });
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // },
   adminpostlogin: async (req, res) => {
     try {
-      if (req.body.email == "admin@gmail.com" && req.body.password == "123") {
-        console.log(req.body);
-        req.session.admin = true;
-        res.redirect("/admin/adminpanel");
-      } else {
-        let msg = "invalid email or password";
-        res.render("admin/adminlogin", { msg });
-      }
-    } catch (err) {
-      console.error(err);
-    }
+      console.log(req.body);
+      // if (req.body.email == "admin@gmail.com" && req.body.password == "123") {
+      //   req.session.admin = true;
+
+      //   res.redirect("/admin/adminpanel");
+      // } else {
+      //   let msg = "Invalid email or password";
+      //   res.render("admin/adminlogin.ejs", { msg });
+      // }
+      admin.findOne({ username: req.body.email }).then((validuser, err) => {
+
+        if (err) {
+          reject(err)
+        }
+        else {
+          if (validuser) {
+            console.log(validuser);
+            bcrypt.compare(req.body.password, validuser.password).then((isPasswordMatch, err) => {
+              if (err) {
+                reject(err);
+              } else {
+                if (isPasswordMatch) {
+                  req.session.admin = true;
+                   res.redirect("/admin/adminpanel");
+                } else {
+                  console.log("Login Failed");
+                  let msg = "Incorrect password"
+                  res.render("admin/adminlogin.ejs", { msg });;
+                }
+              }
+            });
+
+          } else {
+            console.log("no user");
+            let msg = "Invalid email ";
+            res.render("admin/adminlogin.ejs", { msg });
+          }
+
+        }
+      })
+    
+    } catch (error) {}
   },
   adminpanel: async (req, res) => {
     try {
@@ -74,30 +121,11 @@ module.exports = {
   },
   userlist: async (req, res) => {
     try {
-      const count = parseInt(req.query.count) || 5;
-      const page = parseInt(req.query.page) || 1;
-      const totalCount = await user.countDocuments();
-      console.log(totalCount);
-      const startIndex = (page - 1) * count;
-      console.log(startIndex);
-      const totalPages = Math.ceil(totalCount / count);
+  
 
-      // Generate a random offset based on the total count and the page size
-      const randomOffset = Math.floor(Math.random() * (totalCount - count));
-      const endIndex = Math.min(count, totalCount - startIndex);
-
-      const pagination = {
-        totalCount: totalCount, // change this to `totalCount` instead of `totalProductsCount`
-        totalPages: totalPages,
-        page: page,
-        count: count,
-        startIndex: startIndex,
-        endIndex: endIndex
-      };
-
-      const users = await user.find().skip(startIndex).limit(count).lean();
+      const users = await user.find()
       console.log(users);
-      res.render("admin/user-list", { users, pagination });
+      res.render("admin/user-list", { users});
     } catch (err) {
       console.log(err);
     }
@@ -151,29 +179,10 @@ module.exports = {
   },
   productlist: async (req, res) => {
     try {
-      const count = parseInt(req.query.count) || 3;
-      const page = parseInt(req.query.page) || 1;
-      const totalCount = await product.countDocuments();
-      console.log(totalCount);
-      const startIndex = (page - 1) * count;
-      console.log(startIndex);
-      const totalPages = Math.ceil(totalCount / count);
+  
 
-      // Generate a random offset based on the total count and the page size
-      const randomOffset = Math.floor(Math.random() * (totalCount - count));
-      const endIndex = Math.min(count, totalCount - startIndex);
-
-      const pagination = {
-        totalCount: totalCount, // change this to `totalCount` instead of `totalProductsCount`
-        totalPages: totalPages,
-        page: page,
-        count: count,
-        startIndex: startIndex,
-        endIndex: endIndex
-      };
-
-      let products = await product.find().skip(startIndex).limit(count).lean();
-      res.render("admin/products-list.ejs", { products, pagination });
+      let products = await product.find()
+      res.render("admin/products-list.ejs", { products });
     } catch (err) {
       console.error(err);
     }
@@ -277,7 +286,7 @@ module.exports = {
   },
   forgotpassword: async (req, res) => {
     try {
-      res.render("admin/forgotpassword-admin");
+      res.render("admin/forgotpassword");
     } catch (error) {}
   },
   checkOTPforgot: function(req, res) {
@@ -288,36 +297,16 @@ module.exports = {
       } else {
         console.log(response.msg2);
         let msg = response.msg;
-        res.render("admin/forgotpassword-admin", { msg });
+        res.render("admin/forgotpassword", { msg });
       }
     });
   },
   orderlist: async (req, res) => {
     try {
-      const count = parseInt(req.query.count) || 3;
-      const page = parseInt(req.query.page) || 1;
-      const totalCount = await Order.countDocuments();
-      console.log(totalCount);
-      const startIndex = (page - 1) * count;
-      console.log(startIndex);
-      const totalPages = Math.ceil(totalCount / count);
-
-      // Generate a random offset based on the total count and the page size
-      const randomOffset = Math.floor(Math.random() * (totalCount - count));
-      const endIndex = Math.min(count, totalCount - startIndex);
-      console.log(endIndex);
-
-      const pagination = {
-        totalCount: totalCount, // change this to `totalCount` instead of `totalProductsCount`
-        totalPages: totalPages,
-        page: page,
-        count: count,
-        startIndex: startIndex,
-        endIndex: endIndex
-      };
+  
       let orders = await orderhelper.getAllOrders();
       console.log(orders);
-      res.render("admin/order-list", { orders, pagination });
+      res.render("admin/order-list", { orders });
     } catch (error) {
       console.log("erorrrrrr");
     }
@@ -408,11 +397,24 @@ module.exports = {
   },
   addcoupon: async (req, res) => {
     try {
-      console.log(req.body);
-      adminhelper.addCoupon(req.body);
-      res.redirect("/admin/coupon");
-    } catch (error) {}
+      let couponAmount = parseInt(req.body.couponAmount);
+  
+      if (couponAmount < 50 || couponAmount > 500) {
+        res.json({ status: false });
+      } else {
+        adminhelper.addCoupon(req.body)
+          .then((response) => {
+            res.json(response);
+          })
+          .catch((error) => {
+            res.status(500).json({ error: 'Coupon could not be added' });
+          });
+      }
+    } catch (error) {
+      res.status(500).json({ error: 'An error occurred' });
+    }
   },
+  
   salesReportPage: async (req, res) => {
     const sales = await adminhelper.getAllDeliveredOrders();
     console.log("sales", sales);
@@ -487,6 +489,7 @@ module.exports = {
   },
   addOffer: async (req, res) => {
     try {
+      console.log("mmjj");
       console.log(req.body);
       adminhelper.addOffer(req.body);
       res.redirect("/admin/offer");
@@ -542,7 +545,8 @@ deletecoupon:async(req,res)=>{
       );
       res.json({ status: true });
     } catch (error) {}
-  }
+  },
+
 };
 function currencyFormat(amount) {
   return Number(amount).toLocaleString("en-in", {

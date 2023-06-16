@@ -53,7 +53,7 @@
     <section class="product-details spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-5">
                     <div class="product__details__pic">
                         <div class="product__details__pic__left product__thumb nice-scroll">
                             <a class="pt active" href="#product-1">
@@ -136,17 +136,47 @@
                         </div>
                         <div class="product__details__widget">
                             <ul>
-                                 <!-- <li>
+                                 <li>
                                     <span>Availability:</span>
-                                    <div class="stock__checkbox">
+                                    <% if (response.productQuantity>0) { %>
+                                        <span
+                                        class="badge  text-success">
+                                        In stock  
+                                    </span>
+                                    <% } else { %>
+                                        <span
+                                        class="badge  text-danger">
+                                       Out of stock
+                                    </span>
+                                    <% } %>
+                                    <!-- <div class="stock__checkbox">
                                         <label for="stockin">
                                             In Stock
                                             <input type="checkbox" id="stockin">
                                             <span class="checkmark"></span>
                                         </label>
+                                    </div> -->
+                                </li> <br><br>
+                                <li>
+                                    <span>Available color:</span><%=response.productColor%>
+                                </li>
+                                <!-- <li> 
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                                     <h6>Description</h6>
+                                    <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed
+                                        quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt loret.
+                                        Neque porro lorem quisquam est, qui dolorem ipsum quia dolor si. Nemo enim ipsam
+                                        voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed quia ipsu
+                                        consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Nulla
+                                    consequat massa quis enim.</p>
+                                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
+                                        dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
+                                        nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
+                                    quis, sem</p></li> -->
                                     </div>
-                                </li> -->
-                                <!-- <li>
+                                    </div>
+                                 <!-- <li>
                                     <span>Available color:</span>
                                     <div class="color__checkbox">
                                         <label for="red">
@@ -163,7 +193,7 @@
                                         </label>
                                     </div>
                                 </li> -->
-                                <li>
+                                <!-- <li> -->
                                     <!-- <span>Available size:</span>
                                     <div class="size__btn">
                                         <label for="xs-btn" class="active">
@@ -183,7 +213,7 @@
                                             l
                                         </label>
                                     </div> -->
-                                </li>
+                                <!-- </li> -->
                                 <!-- <li>
                                     <span>Promotions:</span>
                                     <p>Free shipping</p>

@@ -14,7 +14,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
-                            <form action="/admin/add-coupon" method="post" >
+                            <form >
                                 <div class="mb-4">
                                     <label for="product_name" class="form-label">Coupen Name</label>
                                     <input type="text" placeholder="Type here" name="couponName" class="form-control" id="product-name" />
@@ -26,16 +26,16 @@
                                 
                                 <div class="mb-4">
                                     <label class="form-label">Expired on</label>
-                                    <input type="text" placeholder="Type here" name="couponExpiry"  class="form-control" id="Expiry-date" />
+                                    <input type="date" placeholder="Type here" name="couponExpiry"   class="form-control" id="Expiry-date" />
                                 </div>
                                 <div class="d-grid">
-                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                    <button class="btn btn-primary" type="button" onclick="addCoupon()">Submit</button>
                                 </div>
                             </form>
                         </div>
                         <div class="col-md-9">
                             <div class="table-responsive">
-                                <table class="table table-hover">
+                                <table class="table table-hover" id="coupon-list">
                                     <thead>
                                         <tr>
                                             
@@ -58,7 +58,18 @@
                                             <td><b><%=coupon.couponName %></b></td>
                                             <td><%=coupon.code %></td>
                                             <td><%=coupon.discount %></td>
-                                            <td><%=coupon.expiryDate %></td>
+                                            <!-- <td><%=coupon.expiryDate %> -->
+                                              <td>
+                                            <%= new Date(coupon.expiryDate).toLocaleString('en-IN', {
+                                              timeZone: 'Asia/Kolkata',
+                                              day: 'numeric',
+                                              month: 'long',
+                                              year: 'numeric',
+                                              hour: 'numeric',
+                                              minute: 'numeric',
+                                              second: 'numeric'
+                                            }) %>
+                                            </td>
                                             <td class="text-end">
                                                 <!-- <div class="dropdown">
                                                     <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
@@ -84,23 +95,81 @@
                 </div> <!-- card body .// -->
             </div> <!-- card .// -->
         </section> <!-- content-main end// -->
-        <footer class="main-footer font-xs">
-            <div class="row pb-30 pt-15">
-                <div class="col-sm-6">
-                    <script>
-                    document.write(new Date().getFullYear())
-                    </script> ©, Evara - HTML Ecommerce Template .
-                </div>
-                <div class="col-sm-6">
-                    <div class="text-sm-end">
-                        All rights reserved
-                    </div>
-                </div>
-            </div>
+       
             <%-include('../partials/adminfooter')-%>
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-            <script>
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+            <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+ 
+            
+ <script>
+function addCoupon() {
+  console.log("jdfhj");
+  const couponName = document.getElementById("product-name").value.trim();
+  const couponAmount = document.getElementById("Discount-amount").value.trim();
+  const couponExpiry = document.getElementById("Expiry-date").value.trim();
+
+  // Validate coupon data
+  if (!couponName || !couponAmount || !couponExpiry) {
+    showAlert("Please fill in all fields");
+    return;
+  }
+
+  // Create an object with the coupon data
+  const couponData = {
+    couponName,
+    couponAmount,
+    couponExpiry,
+  };
+
+  console.log("hello");
+  console.log(couponData);
+
+  // Send a POST request to the server
+  $.ajax({
+    type: "POST",
+    url: "/admin/add-coupon",
+    data: couponData,
+    success: function (response) {
+      console.log(response);
+
+      if (response.status === true) {
+        // Show success message
+        console.log("ghdgch");
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Coupon added',
+          showConfirmButton: false,
+          timer: 1600
+        }).then(() => {
+          window.location.reload();
+        });
+      } else {
+        showAlert("Coupon only added between 50-500 only"); // Pass the error message from the response
+      }
+    },
+    error: function (xhr, status, error) {
+      console.error(error);
+      showAlert("An error occurred"); // Display a generic error message
+    },
+  });
+}
+
+
+function showAlert(message) {
+  Swal.fire({
+    icon: "warning",
+    text: message,
+  });
+}
+</script>
+
+
+<script>
+
+
    function deleteOffer(couponId) {
    const url2 = `/admin/deletecoupon/${couponId}`;
    Swal.fire({

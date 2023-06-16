@@ -41,7 +41,7 @@
       <!-- card-header end// -->
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-hover" id="user-lists">
+          <table class="table table-hover" id="product-list">
             <thead>
               <tr>
                 <th>No</th>
@@ -52,7 +52,7 @@
                 <th>category</th>
                 <th>Quantity</th>
                 <th class="text-end">Action</th>
-                <th></th>
+                
               </tr>
             </thead>
             <tbody>
@@ -103,7 +103,7 @@
                             <span class="badge rounded-pill alert-danger">Deactive</span>
                             <% } %>
                                          
-                                        </td>
+                     </td>
                                         
                     <td>
                         <%=products.productcategory%>
@@ -149,14 +149,12 @@
       <!-- card-body end// -->
     </div>
     <!-- card end// -->
-    <div class="pagination-area mt-15 mb-50">
-     
-        <%-include('pagination')-%>
-    </div> 
+   
 </section> <!-- content-main end// -->
 <%-include('../partials/adminfooter')-%>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script>
  function deleteproduct(productId) {
    const url2 = `/admin/deleteproduct/${productId}`;

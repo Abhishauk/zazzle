@@ -184,6 +184,7 @@
                             <h6>
                                 <input type="text" placeholder="Enter your coupon code" id="couponCode" name="couponCode">
                                 <button  class="site-btn" onclick="applyCoupon('<%=total%>')">Apply</button>
+                                <input type="text" name="couponAmount" id="couponAmount" hidden >
                             </h6>
                             <button class="site-btn mt-3" data-toggle="modal" data-target="#showCoupen">AvailableCoupons</button>
 
@@ -256,6 +257,9 @@
                         </div>
                         <div class="checkout__order__total">
                             <ul>
+                                <li>Discount <span id="discount">
+                                   
+                                </span></li>
 
                                 <li>Total <span id="total">
                                     &#x20B9;<%=total%>
@@ -280,6 +284,12 @@
                                 <input type="radio" id="cashondelivery" name="payment" value="COD">
                                 <span class="checkmark"></span>
                             </label>
+                            <label for="wallet">
+                                Wallet
+                                <input type="radio" id="wallet" name="payment" value="wallet">
+                                <span class="checkmark"></span>
+                            </label>
+                            <p>wallet balance: <%= walletBalance %></p>
                         </div>
                         <button type="submit" id="placeOrder-btn" class="site-btn">Place oder</button>
                     </div>
@@ -406,6 +416,9 @@
                 console.log(dataValue);
                 var payment_method = $('input[name="payment"]:checked').val();
                 var total= $('#total').text().replace(/[^\d\.]/g , '').trim()
+                let couponAmount=document.getElementById("couponAmount").value
+                console.log("couponAmount");
+                console.log(couponAmount);
                console.log(total);
                 console.log("aaa");
                 Swal.fire({
@@ -422,7 +435,7 @@
 
                             type: 'POST',
                             url: '/placeOrder',
-                            data: { address_id: dataValue, payment_method: payment_method,total:total },
+                            data: { address_id: dataValue, payment_method: payment_method,total:total,couponAmount:couponAmount },
 
                             success: function (response) {
                                 console.log("gggggggg");
@@ -592,6 +605,7 @@
     function applyCoupon(totalAmount) {
         console.log("QQQQQQWWWW");
         const couponCode = document.getElementById('couponCode').value;
+       
         console.log(couponCode);
 
         $.ajax({
@@ -612,9 +626,19 @@
                     // document.getElementById('couponApplySuccess').classList.remove('d-none')
                     // document.getElementById('couponApplySuccess').innerHTML = res.message
                     // document.getElementById('discount').innerHTML = -res.discount
+                    document.getElementById('total').innerHTML = res.totalAmount
+                    document.getElementById('discount').innerHTML = res.discount
+                    document.getElementById('couponAmount').value = res.discount
                     document.getElementById('total').innerHTML= res.totalAmount
                 } else {
                     console.log(res);
+                    Swal.fire({
+                    position: 'center',
+                    icon: 'warning',
+                    title: res.message,
+                    showConfirmButton: false,
+                    timer: 1600
+                })
                     // document.getElementById('couponApplySuccess').classList.add('d-none')
                     // document.getElementById('couponApplyFail').classList.remove('d-none')
                     // document.getElementById('couponApplyFail').innerHTML = res.message
