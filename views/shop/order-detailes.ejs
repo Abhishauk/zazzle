@@ -94,17 +94,16 @@
                   <!-- Display Order Details and Address Here -->
                   <div class="order-details">
                     <h3>Order Details</h3>
+                    <p> <strong>OrderId:</strong><%=orderdetailes[0].orderId %></p>
                     <p>
                       <strong>Order Date:</strong>
                       <%= new Date(orderdetailes[0].orderDate).toLocaleString('en-IN', {
                         timeZone: 'Asia/Kolkata',
                         day: 'numeric',
                         month: 'long',
-                        year: 'numeric',
-                        hour: 'numeric',
-                        minute: 'numeric',
-                        second: 'numeric'
+                        year: 'numeric'
                       }) %>
+                      
                     </p>
                     <p><strong>Payment Method:</strong> <%= orderdetailes[0].paymentMethod %></p>
                     <p><strong>Total Amount:</strong> <%= orderdetailes[0].totalAmount %></p>
@@ -116,9 +115,9 @@
                   <div class="address-details">
                     <h3>Address</h3>
                     <p>
-                      <strong>Name:</strong> <%= addresses[0].name %><br>
+                      <strong>Name:</strong> <%= addresses[0].name %>
                       <strong>Address:</strong> <%= addresses[0].address %><br>
-                      <strong>City:</strong> <%= addresses[0].city %><br>
+                      <strong>City:</strong> <%= addresses[0].city %>
                       <strong>State:</strong> <%= addresses[0].state %><br>
                       <strong>Postal Code:</strong> <%= addresses[0].postcode %><br>
                       <strong>Email:</strong> <%= addresses[0].email %>
@@ -161,12 +160,9 @@
                 <div class="col-md-4 col-sm-3 align-items-center">
                     <br>
                     <p class="mb-0">
-                        <p><b>Product Details:</b></p>
-                        <%= product.orderedProduct.productname %>
-                    </p>
-                    <p>
-                        <%= product.orderedProduct.productcategory %>
-                    </p>
+                        <p><b>Product Details:</b></p></p>
+                       <b> <%= product.orderedProduct.productname %></b><br>
+                    <p class="text-muted mb-0 small"><%= product.orderedProduct.productcategory %></p>
                     <p class="text-muted mb-0 small">Qty: <%= product.orderedItems.quantity %></p>
                     <p class="text-muted mb-0 small">&#8377; <%= product.orderedProduct.productpromotionalprice %></p>
                 </div>

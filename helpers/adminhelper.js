@@ -278,7 +278,7 @@ module.exports = {
         console.log(totalProducts);
         response.totalProducts = totalProducts[0]?.total;
 
-        response.totalOrders = await orderModel.find({ orderStatus: 'placed' }).count();
+        response.totalOrders = await orderModel.find({ orderStatus: 'delivered' }).count();
 
         response.numberOfCategories = await Category.find({}).count();
 

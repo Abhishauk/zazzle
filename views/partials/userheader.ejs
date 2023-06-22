@@ -48,8 +48,8 @@ https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js">
         </div>
         <div class="col-xl-6 col-lg-7">
           <nav class="header__menu">
-            <ul class="menuList">
-              <li class="menu-front"><a href="/home">Home</a></li>
+            <ul class="menuList ">
+              <li class="menu-front  "><a href="/home">Home</a></li>
               <li><a href="/shop">Shop</a></li>
               <li>
                 <a href="#">Pages</a>
@@ -58,10 +58,14 @@ https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js">
                   <li class="menu-front"><a href="/shop-cart">Shop Cart</a></li>
                   <li class="menu-front"><a href="./checkout">Checkout</a></li>
                   <li class="menu-front"><a href="./blog-details">Blog Details</a></li>
-                  <li class="menu-front"><a href="/profile">Profile</a></li>
+                  <!-- <li class="menu-front"><a href="/profile">Profile</a></li> -->
                 </ul>
               </li>
               <li><a href="/blog">Blog</a></li>
+              <% var username=username || '' ; %> 
+              <% if (username) { %>
+              <li><a href="/profile">Profile</a></li>
+              <% } %>
               <!-- <li><a href="#">About us</a></li> -->
               <li><a href="/contact">Contact</a></li>
             </ul>
@@ -93,21 +97,13 @@ https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js">
                     </span> 
                     </div>
                     <% } %>
-                </a>
-            
-              
+                </a>  
               </li>
               <li>
-                              
-                                        
-                        
-
-            
                 <a href="/shop-cart"
                   ><span class="icon_bag_alt"></span>
                   <% if (username && cartCount) { %>
-                  <div class="tip">
-                    
+                  <div class="tip">     
                       <span class="wishlist-count" id="wishListCount">
                           <%= cartCount %>
                       </span>  

@@ -2,465 +2,491 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.min.js"></script> -->
 
 <% var username=username || '' ; %>
-<% var wishListCount=wishListCount|| 0 ; %>
-<% var cartCount=cartCount|| 0 ; %>
-    <% if (username) { %>
-        <%-include('../partials/userheader',{username,wishListCount,cartCount})-%>
+    <% var wishListCount=wishListCount|| 0 ; %>
+        <% var cartCount=cartCount|| 0 ; %>
+            <% if (username) { %>
+                <%-include('../partials/userheader',{username,wishListCount,cartCount})-%>
 
 
- <% }else{%>
-    <%-include('../partials/userheader')-%>
-<%  }  %>
+                    <% }else{%>
+                        <%-include('../partials/userheader')-%>
+                            <%  }  %>
 
-                        <!-- Header Section End -->
+                                <!-- Header Section End -->
 
-                        <!-- Breadcrumb Begin -->
-                        <!-- Breadcrumb End -->
+                                <!-- Breadcrumb Begin -->
+                                <!-- Breadcrumb End -->
 
-                        <!-- Shop Section Begin -->
-                        
-                        <div class="breadcrumb-option">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="breadcrumb__links">
-                                            <a href="/home"><i class="fa fa-home"></i> Home</a>
-                                            <span>shop</span>
+                                <!-- Shop Section Begin -->
+
+                                <div class="breadcrumb-option">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="breadcrumb__links">
+                                                    <a href="/home"><i class="fa fa-home"></i> Home</a>
+                                                    <span>shop</span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <section class="shop spad"></section>
-                         <div class="container">
-                            <div class="row">
+                                <section class="shop spad">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3">
 
-                                <div class="col-lg-3 col-md-3">
-                                    <div class="shop__sidebar">
-
-                                        <div class="sidebar__categories">
-                                            <div class="section-title">
-                                                <h4>Categories</h4>
-                                            </div>
-                                            <div class="categories__accordion">
-                                                <div class="accordion" id="accordionExample">
-                                                    <div class="card">
-                                                        <div class="card-heading">
-                                                            <a data-toggle="collapse"
-                                                                data-target="#collapseOne">Bags</a>
-                                                        </div>
-                                                        <div id="collapseOne" class="collapse show"
-                                                            data-parent="#accordionExample">
-                                                            <div class="card-body">
-                                                                <ul>
-                                                                    <% categories.forEach(function(category){ %>
-                                                                        <li> <input type="checkbox" id="<%=category.categoryname %>" value="<%=category.categoryname %>"><a
-                                                                                href="/category/<%=category.categoryname %>">
+                                                <div class="shop__sidebar">
+                                                    <form class="search-form mt-2" >
+                                                        <input type="text" class="search" id="searchInput"
+                                                            placeholder="Search products...">
+                                                        <button class="search-btn" type="submit" id="searchButton"><svg
+                                                                class="search-icon" xmlns="http://www.w3.org/2000/svg"
+                                                                viewBox="0 0 24 24">
+                                                                <path
+                                                                    d="M15.5 14h-.79l-.28-.27c1.2-1.39 1.98-3.18 1.98-5.23 0-4.42-3.58-8-8-8s-8 3.58-8 8 3.58 8 8 8c2.05 0 3.84-.78 5.23-1.98l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-7.5 0C6.01 14 4 11.99 4 9.5S6.01 5 8.5 5 13 7.01 13 9.5 10.99 14 8.5 14z" />
+                                                            </svg></button>
+                                                    </form>
+                                                    <div class="sidebar__categories">
+                                                        <div class="categories__accordion">
+                                                            <div class="accordion" id="accordionExample">
+                                                                <div class="card">
+                                                                    <!-- <div class="card-heading active"> -->
+                                                                    <div class="section-title ">
+                                                                        <a data-toggle="collapse"
+                                                                            data-target="#categoryListCollapse">
+                                                                            <h5>Categories</h5>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div id="categoryListCollapse"
+                                                                        class="category-list collapse">
+                                                                        <% categories.forEach(function(category){ %>
+                                                                            <label>
                                                                                 <%=category.categoryname%>
-                                                                            </a></li>
-                                                                        <% }); %>
+                                                                                    <input type="checkbox"
+                                                                                        id="<%=category.categoryname %>"
+                                                                                        value="<%=category.categoryname %>">
+                                                                                    <span class="checkmark"></span>
+                                                                            </label>
+                                                                            <% }); %>
+                                                                    </div>
+                                                                </div>
 
-                                                                </ul>
+
+
+                                                                <div class="card">
+                                                                    <div class="sidebar__prices">
+                                                                        <div class="section-title">
+                                                                            <a data-toggle="collapse"
+                                                                                data-target="#priceListCollapse">
+                                                                                <h5>Shop by price</h5>
+                                                                            </a>
+                                                                        </div>
+                                                                        <div id="priceListCollapse"
+                                                                            class="price__list collapse">
+                                                                            <label>
+                                                                                ₹100 - ₹500
+                                                                                <input type="checkbox" id="pricerange1"
+                                                                                    value="100 - 500">
+                                                                                <span class="checkmark"></span>
+                                                                            </label>
+                                                                            <label>
+                                                                                ₹500 - ₹1000
+                                                                                <input type="checkbox" id="pricerange2"
+                                                                                    value="500 - 1000">
+                                                                                <span class="checkmark"></span>
+                                                                            </label>
+                                                                            <label>
+                                                                                ₹1000 - ₹1500
+                                                                                <input type="checkbox" id="pricerange3"
+                                                                                    value="1000 - 1500">
+                                                                                <span class="checkmark"></span>
+                                                                            </label>
+                                                                            <label>
+                                                                                ₹1500 - ₹2000
+                                                                                <input type="checkbox" id="pricerange4"
+                                                                                    value="1500 - 2000">
+                                                                                <span class="checkmark"></span>
+                                                                            </label>
+                                                                            <label>
+                                                                                ₹2000 - ₹2500
+                                                                                <input type="checkbox" id="pricerange5"
+                                                                                    value="2000 - 2500">
+                                                                                <span class="checkmark"></span>
+                                                                            </label>
+                                                                            <label>
+                                                                                ₹2500 - ₹4000
+                                                                                <input type="checkbox" id="pricerange6"
+                                                                                    value="2500 - 4000">
+                                                                                <span class="checkmark"></span>
+                                                                            </label>
+                                                                            <label>
+                                                                                ₹4000+
+                                                                                <input type="checkbox" id="pricerange7"
+                                                                                    value="4000+">
+                                                                                <span class="checkmark"></span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="card">
+                                                                    <div class="sidebar__color">
+                                                                        <div class="section-title">
+                                                                            <a data-toggle="collapse"
+                                                                                data-target="#colorListCollapse">
+                                                                                <h5>Shop by Color</h5>
+                                                                            </a>
+                                                                        </div>
+                                                                        <div id="colorListCollapse"
+                                                                            class="cl__list color__list collapse">
+                                                                            <label for="black">
+                                                                                Blacks
+                                                                                <input type="checkbox" id="black"
+                                                                                    value="black">
+                                                                                <span class="checkmark"></span>
+                                                                            </label>
+                                                                            <label for="white">
+                                                                                Whites
+                                                                                <input type="checkbox" id="white"
+                                                                                    value="white">
+                                                                                <span class="checkmark"></span>
+                                                                            </label>
+                                                                            <label for="red">
+                                                                                Reds
+                                                                                <input type="checkbox" id="red"
+                                                                                    value="red">
+                                                                                <span class="checkmark"></span>
+                                                                            </label>
+                                                                            <label for="grey">
+                                                                                Greys
+                                                                                <input type="checkbox" id="grey"
+                                                                                    value="grey">
+                                                                                <span class="checkmark"></span>
+                                                                            </label>
+                                                                            <label for="blue">
+                                                                                Blues
+                                                                                <input type="checkbox" id="blue"
+                                                                                    value="blue">
+                                                                                <span class="checkmark"></span>
+                                                                            </label>
+                                                                            <label for="beige">
+                                                                                Beige Tones
+                                                                                <input type="checkbox" id="beige"
+                                                                                    value="beige">
+                                                                                <span class="checkmark"></span>
+                                                                            </label>
+                                                                            <label for="green">
+                                                                                Greens
+                                                                                <input type="checkbox" id="green"
+                                                                                    value="green">
+                                                                                <span class="checkmark"></span>
+                                                                            </label>
+                                                                            <label for="yellow">
+                                                                                Yellows
+                                                                                <input type="checkbox" id="yellow"
+                                                                                    value="yellow">
+                                                                                <span class="checkmark"></span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <a href="" id="filter-btn"
+                                                                    class="primary-btn">Filter</a>
+
+
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </div>
-                                        </div>
-                                     
-                                        <div class="sidebar__prices">
-                                             <div class="section-title">
-                                <h4>Shop by price</h4>
-                            </div>
-                                <div class="price__list">
-                                <label>
-                                    ₹100 - ₹500
-                                    <input type="checkbox" id="pricerange1" value="100 - 500">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label>
-                                    ₹500 - ₹1000
-                                    <input type="checkbox" id="pricerange1" value="500 - 1000">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label>
-                                    ₹1000 - ₹1500
-                                    <input type="checkbox" id="pricerange1" value="1000 - 1500">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label>
-                                    ₹1500 - ₹2000
-                                    <input type="checkbox" id="pricerange1" value="1500 - 2000">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label>
-                                    ₹2000 - ₹2500
-                                    <input type="checkbox" id="pricerange1" value=" 2000 - 2500">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label>
-                                    ₹2500 - ₹4000
-                                    <input type="checkbox" id="pricerange1" value="2500 - 4000">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="l">
-                                    ₹4000+
-                                    <input type="checkbox" id="pricerange1" value="4000+">
-                                    <span class="checkmark"></span>
-                                </label>
-                               
-                            </div> 
-                                        </div>
-                                        <div class="sidebar__color">
-                            <div class="section-title">
-                                <h4>Shop by Color</h4>
-                            </div>
-                            <div class="cl__list color__list">
-                                <label for="black">
-                                    Blacks
-                                    <input type="checkbox" id="black" value="black">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="white">
-                                    Whites
-                                    <input type="checkbox" id="white" value="white">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="red">
-                                    Reds
-                                    <input type="checkbox" id="red" value="red">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="grey">
-                                    Greys
-                                    <input type="checkbox" id="grey" value="grey">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="blue">
-                                    Blues
-                                    <input type="checkbox" id="blue" value="blue">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="beige">
-                                    Beige Tones
-                                    <input type="checkbox" id="beige" value="beige">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="green">
-                                    Greens
-                                    <input type="checkbox" id="green" value="green">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="yellow">
-                                    Yellows
-                                    <input type="checkbox" id="yellow" value="yellow">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            
-                        </div> 
-                        <a href="" id="filter-btn" class="primary-btn">Filter</a>
-
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-9 col-md-9">
-
-                                    <!-- search-results.ejs -->
-                                    <!-- <h2>Search Results</h2> -->
-                                    <section class="shop spad">
-                                        <form class="search-form " action="/search" method="GET">
-                                            <input type="text" name="query" placeholder="Search products...">
-                                            <button type="submit"><svg class="search-icon"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                                    <path
-                                                        d="M15.5 14h-.79l-.28-.27c1.2-1.39 1.98-3.18 1.98-5.23 0-4.42-3.58-8-8-8s-8 3.58-8 8 3.58 8 8 8c2.05 0 3.84-.78 5.23-1.98l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-7.5 0C6.01 14 4 11.99 4 9.5S6.01 5 8.5 5 13 7.01 13 9.5 10.99 14 8.5 14z" />
-                                                </svg></button>
-                                        </form>
-                                        <div id="productList" class="row">
-
-                                        </div>
-                                        <div class="row" id="productListCurrent" >
-                                            <% products.forEach(function(product) { %>
-                                                <div class="col-lg-4 col-md-6">
-                                                    <div class="product__item mt-3">
-                                                        <div class="product__item__pic set-bg">
-                                                            <a href="/product-details/<%= product._id %>">
-                                                                <div class="product__item__pic2 set-bg">
-                                                                <img src="uploads/<%= product.productimage[0] %>"alt="">
-                                                                <% if(product.productoffer){ %>
-                                                                    <span class="label success">offer</span>
-                                                                    <% } %>
-                                                                </div>
-                                                            </a>
-                                                            <ul class="product__hover">
-                                                                <li><a href="uploads/<%= product.productimage[0] %>"
-                                                                        class="image-popup"><span
-                                                                            class="arrow_expand"></span></a></li>
-                                                                <!-- <li><a href="#"><span class="icon_heart_alt"></span></a></li> -->
-                                                                <li><a href="#" data-value="<%= product._id%>"
-                                                                        class="add-produtToWishlist btn-product-icon btn-wishlist btn-expandable"><span
-                                                                            class="icon_heart_alt">
-                                                                        </span></a></li>
 
 
-                                                                <li><a onclick="cartIncrement('<%= product._id %>')"><span
-                                                                            class="icon_bag_alt"></span></a></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product__item__text">
-                                                        <div class="product__name">
-                                                        <%= product.productname %> <br>
-                                                    </div>
-                                                    <div class="rating">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                    </div>
-                                                    <%=product.productdescription%><br>
-                                                    <div class="promo">
-                                                        &#x20B9;<%= product.productpromotionalprice %> 
-                                                        <span>&#x20B9;<%= product.productregularprice %></span><br>
-                                                                </div>
-                                                                <% if (product.productQuantity>0) { %>
-                                                        
-                                                                    <div class="badge  text-success">
-                                                                     In stock  </div>
-                                                                
-                                                                 <% } else { %>
-                                                                     <span
-                                                                     class="badge  text-danger">
-                                                                    Out of stock
-                                                                 </span>
-                                                                 <% } %>
-                                                    </div>
+                                            <div class="col-lg-9 col-md-9">
+
+                                                <div id="productList" class="row">
+
                                                 </div>
-                                                <% }); %>
+                                                <div class="row" id="productListCurrent">
+                                                    <% products.forEach(function(product) { %>
+                                                        <div class="col-lg-4 col-md-6">
+                                                            <div class="product__item mt-3">
+                                                                <div class="product__item__pic set-bg">
+                                                                    <a href="/product-details/<%= product._id %>">
+                                                                        <div class="product__item__pic2 set-bg">
+                                                                            <img src="uploads/<%= product.productimage[0] %>"
+                                                                                alt="">
+                                                                            <% if(product.productoffer){ %>
+                                                                                <span class="label success">offer</span>
+                                                                                <% } %>
+                                                                        </div>
+                                                                    </a>
+                                                                    <ul class="product__hover">
+                                                                        <li><a href="uploads/<%= product.productimage[0] %>"
+                                                                                class="image-popup"><span
+                                                                                    class="arrow_expand"></span></a>
+                                                                        </li>
+                                                                        <!-- <li><a href="#"><span class="icon_heart_alt"></span></a></li> -->
+                                                                        <li><a href="#" data-value="<%= product._id%>"
+                                                                                class="add-produtToWishlist btn-product-icon btn-wishlist btn-expandable"><span
+                                                                                    class="icon_heart_alt">
+                                                                                </span></a></li>
+                                                                        <li><a
+                                                                                onclick="cartIncrement('<%= product._id %>')"><span
+                                                                                    class="icon_bag_alt"></span></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product__item__text">
+                                                                <div class="product__name">
+                                                                    <%= product.productname %> <br>
+                                                                </div>
+                                                                <div class="rating">
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                </div>
+                                                                <%=product.productdescription%><br>
+                                                                    <div class="promo">
+                                                                        &#x20B9;<%= product.productpromotionalprice %>
+                                                                            <span>&#x20B9;<%=
+                                                                                    product.productregularprice %>
+                                                                                    </span><br>
+                                                                    </div>
+                                                                    <% if (product.productQuantity>0) { %>
+
+                                                                        <div class="badge  text-success">
+                                                                            In stock </div>
+
+                                                                        <% } else { %>
+                                                                            <span class="badge  text-danger">
+                                                                                Out of stock
+                                                                            </span>
+                                                                             <% } %>
+                                                            </div>
+                                                        </div>
+                                                        <% }); %>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 text-center">
+                                                <%-include('pagination')-%>
+                                            </div>
                                         </div>
+                                    </div>
+                                </section>
 
+                                <!-- Footer Section Begin -->
+                                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                                <!-- <script src="user/assets/js/jquery.magnific-popup.min.js"></script> -->
+                                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                                <script src="https://unpkg.com/sweetalert@2"></script>
 
-                                </div>
+                                <%-include('../partials/userfooter')-%>
+                                    <script>
 
-                                <div class="col-lg-12 text-center">
-                                    <%-include('pagination')-%>
-                                </div>
+                                        function cartIncrement(productid) {
+                                            console.log("aaaa");
+                                            // let count = document.querySelector('.cart-count')
+                                            // let val = parseInt(count.textContent)
+                                            $.ajax({
+                                                url: '/addToCart',
+                                                data: {
+                                                    productid: productid
+                                                },
+                                                method: 'post',
+                                                success: (response) => {
+                                                    if (response.response) {
+                                                        console.log("bbbbbbbbbbbbbbbbbbbbbbb");
+                                                        console.log(response);
+                                                        // alert('added to cart')
+                                                        // location.reload()
+                                                        if (response.limit) {
+                                                            Swal.fire(
+                                                                "sorry!",
+                                                                response.msg,
+                                                                "warning"
+                                                            );
+                                                        } else {
 
-
-                            </div>
-                            </div>
-                            </section>
-
-                            <!-- Footer Section Begin -->
-                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                            <!-- <script src="user/assets/js/jquery.magnific-popup.min.js"></script> -->
-                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                            <script src="https://unpkg.com/sweetalert@2"></script>
-
-                            <%-include('../partials/userfooter')-%>
-                                <script>
-                                    
-                                    function cartIncrement(productid) {
-                                        console.log("aaaa");
-                                        // let count = document.querySelector('.cart-count')
-                                        // let val = parseInt(count.textContent)
-                                        $.ajax({
-                                            url: '/addToCart',
-                                            data: {
-                                                productid: productid
-                                            },
-                                            method: 'post',
-                                            success: (response) => {
-                                                if (response.response) {
-                                                    console.log("bbbbbbbbbbbbbbbbbbbbbbb");
-                                                    console.log(response);
-                                                    // alert('added to cart')
-                                                    // location.reload()
-                                                    if (response.limit) {
-                                                        Swal.fire(
-                                                          "sorry!",
-                                                          response.msg, 
-                                                          "warning"
-                                                           );
+                                                            console.log("hqaifff");
+                                                            // document.querySelector('.cart-count').textContent=val+1
+                                                            Swal.fire({
+                                                                position: 'top',
+                                                                icon: 'success',
+                                                                title: 'Product added to cart',
+                                                                showConfirmButton: false,
+                                                                timer: 1600
+                                                            })
+                                                                .then(() => {
+                                                                    location.reload()
+                                                                })
+                                                        }
                                                     } else {
-
-                                                        console.log("hqaifff");
-                                                        // document.querySelector('.cart-count').textContent=val+1
                                                         Swal.fire({
                                                             position: 'top',
-                                                            icon: 'success',
-                                                            title: 'Product added to cart',
+                                                            icon: 'alert',
+                                                            title: 'Login needed',
                                                             showConfirmButton: false,
                                                             timer: 1600
                                                         })
-                                                        .then(() => {
-                                                            location.reload()
-                                                        })
+                                                        setTimeout(() => {
+
+                                                            window.location = '/login'
+                                                        }, 1700)
                                                     }
-                                                } else {
-                                                    Swal.fire({
-                                                        position: 'top',
-                                                        icon: 'alert',
-                                                        title: 'Login needed',
-                                                        showConfirmButton: false,
-                                                        timer: 1600
-                                                    })
-                                                    setTimeout(() => {
-
-                                                        window.location = '/login'
-                                                    }, 1700)
                                                 }
-                                            }
-                                        })
-                                    }
+                                            })
+                                        }
 
 
-         $(document).ready(function () {
-    $(document).on("click", ".add-produtToWishlist", function () {
-    const productId = $(this).data('value');
-    console.log("clicked");
-    console.log("hjjjjjjjjjj", productId);
-    $.ajax({
-      url: '/add-to-wishList',
-      type: 'post',
-      data: { productId: productId }
-    })
-      .done((res) => {
-        console.log("ssss");
-        console.log(res);
+                                        $(document).ready(function () {
+                                            $(document).on("click", ".add-produtToWishlist", function () {
+                                                const productId = $(this).data('value');
+                                                console.log("clicked");
+                                                console.log("hjjjjjjjjjj", productId);
+                                                $.ajax({
+                                                    url: '/add-to-wishList',
+                                                    type: 'post',
+                                                    data: { productId: productId }
+                                                })
+                                                    .done((res) => {
+                                                        console.log("ssss");
+                                                        console.log(res);
 
-        if (res.response == true) {
-          Swal.fire({
-            position: 'top',
-            icon: 'success',
-            title: 'Product added to Wishlist',
-            showConfirmButton: false,
-            timer: 1600
-          })
-            .then(() => {
-              location.reload();
-            });
-        } else {
-          if (res.message === "Product already exists in the wishlist.") {
-            Swal.fire({
-              position: 'top',
-              icon: 'error',
-              title: 'Product already added to Wishlist',
-              showConfirmButton: false,
-              timer: 1600
-            });
-          } else {
-                                                    Swal.fire({
-                                                        position: 'top',
-                                                        icon: 'alert',
-                                                        title: 'Login needed',
-                                                        showConfirmButton: false,
-                                                        timer: 1600
+                                                        if (res.response == true) {
+                                                            Swal.fire({
+                                                                position: 'top',
+                                                                icon: 'success',
+                                                                title: 'Product added to Wishlist',
+                                                                showConfirmButton: false,
+                                                                timer: 1600
+                                                            })
+                                                                .then(() => {
+                                                                    location.reload();
+                                                                });
+                                                        } else {
+                                                            if (res.message === "Product already exists in the wishlist.") {
+                                                                Swal.fire({
+                                                                    position: 'top',
+                                                                    icon: 'error',
+                                                                    title: 'Product already added to Wishlist',
+                                                                    showConfirmButton: false,
+                                                                    timer: 1600
+                                                                });
+                                                            } else {
+                                                                Swal.fire({
+                                                                    position: 'top',
+                                                                    icon: 'alert',
+                                                                    title: 'Login needed',
+                                                                    showConfirmButton: false,
+                                                                    timer: 1600
+                                                                })
+                                                                setTimeout(() => {
+
+                                                                    window.location = '/login'
+                                                                }, 1700)
+                                                            }
+                                                        }
                                                     })
-                                                    setTimeout(() => {
-
-                                                        window.location = '/login'
-                                                    }, 1700)
-                                                }
-        }
-      })
-      .fail((err) => {
-        console.log(err);
-      });
-  });
-});
+                                                    .fail((err) => {
+                                                        console.log(err);
+                                                    });
+                                            });
+                                        });
 
 
 
-                                </script>
-                                 <script>
-                                //    $(document).ready(function() {
-    // Filter button click event
-//     $('#filter-btn').click(function(event) {
-//         event.preventDefault(); // Prevent the default form submission
+                                    </script>
+                                    <script>
+                                        //    $(document).ready(function() {
+                                        // Filter button click event
+                                        //     $('#filter-btn').click(function(event) {
+                                        //         event.preventDefault(); // Prevent the default form submission
 
-//         // Retrieve the selected category, price, and color values
-//         var selectedCategories = [];
-//         $('input[type="checkbox"]:checked').each(function() {
-//             selectedCategories.push($(this).val());
-//         });
+                                        //         // Retrieve the selected category, price, and color values
+                                        //         var selectedCategories = [];
+                                        //         $('input[type="checkbox"]:checked').each(function() {
+                                        //             selectedCategories.push($(this).val());
+                                        //         });
 
-//         var selectedPriceRanges = [];
-//         $('.price__list input[type="checkbox"]:checked').each(function() {
-//             selectedPriceRanges.push($(this).val());
-//         });
+                                        //         var selectedPriceRanges = [];
+                                        //         $('.price__list input[type="checkbox"]:checked').each(function() {
+                                        //             selectedPriceRanges.push($(this).val());
+                                        //         });
 
-//         var selectedColors = [];
-//         $('.color__list input[type="checkbox"]:checked').each(function() {
-//             selectedColors.push($(this).val());
-//         });
+                                        //         var selectedColors = [];
+                                        //         $('.color__list input[type="checkbox"]:checked').each(function() {
+                                        //             selectedColors.push($(this).val());
+                                        //         });
 
-//         // Create the data object to send via AJAX
-//         var data = {
-//             categories: selectedCategories,
-//             priceRanges: selectedPriceRanges,
-//             colors: selectedColors
-//         };
+                                        //         // Create the data object to send via AJAX
+                                        //         var data = {
+                                        //             categories: selectedCategories,
+                                        //             priceRanges: selectedPriceRanges,
+                                        //             colors: selectedColors
+                                        //         };
 
-//         // Send the selected values to the server-side for further processing
-//         $.ajax({
-//             url: '/filter-results',  // Replace with the URL of your server-side script
-//             type: 'POST',
-//             data: data,
-//             success: function(response) {
-//                 // Handle the response from the server
-//                 console.log('Filtered results received:', response);
-//                 // Update the UI with the filtered results
-//                 // ...
-//             },
-//             error: function() {
-//                 console.log('Error occurred while filtering results!');
-//             }
-//         });
-//     });
-// });
+                                        //         // Send the selected values to the server-side for further processing
+                                        //         $.ajax({
+                                        //             url: '/filter-results',  // Replace with the URL of your server-side script
+                                        //             type: 'POST',
+                                        //             data: data,
+                                        //             success: function(response) {
+                                        //                 // Handle the response from the server
+                                        //                 console.log('Filtered results received:', response);
+                                        //                 // Update the UI with the filtered results
+                                        //                 // ...
+                                        //             },
+                                        //             error: function() {
+                                        //                 console.log('Error occurred while filtering results!');
+                                        //             }
+                                        //         });
+                                        //     });
+                                        // });
 
-$(document).ready(function() {
-    // Filter button click event
-    $('#filter-btn').click(function(event) {
-        event.preventDefault(); // Prevent the default form submission
+                                        $(document).ready(function () {
+                                            // Filter button click event
+                                            $('#filter-btn').click(function (event) {
+                                                event.preventDefault(); // Prevent the default form submission
 
-        // Retrieve the selected values for categories, price ranges, and colors
-        var selectedCategories = getSelectedValues('.categories__accordion input[type="checkbox"]:checked');
-        var selectedPriceRanges = getSelectedValues('.price__list input[type="checkbox"]:checked');
-        var selectedColors = getSelectedValues('.color__list input[type="checkbox"]:checked');
+                                                // Retrieve the selected values for categories, price ranges, and colors
+                                                var selectedCategories = getSelectedValues('.category-list input[type="checkbox"]:checked');
+                                                var selectedPriceRanges = getSelectedValues('.price__list input[type="checkbox"]:checked');
+                                                var selectedColors = getSelectedValues('.color__list input[type="checkbox"]:checked');
 
-        // Create the data object to send via AJAX
-        var data = {
-            categories: selectedCategories,
-            priceRanges: selectedPriceRanges,
-            colors: selectedColors
-        };
+                                                // Create the data object to send via AJAX
+                                                var data = {
+                                                    categories: selectedCategories,
+                                                    priceRanges: selectedPriceRanges,
+                                                    colors: selectedColors
+                                                };
+                                                console.log(data);
 
-        // Send the selected values to the server-side for further processing
-        $.ajax({
-            url: '/filter-results',  // Replace with the URL of your server-side script
-            type: 'POST',
-            data: data,
-            success: function(response) {
-                console.log(response);
-                // Handle the response from the server
-                console.log('Filtered results received:', response);
-                // Update the UI with the filtered results
-                // ...
-                var productList = $('#productListCurrent');
-          productList.empty(); // Empty the existing products
+                                                // Send the selected values to the server-side for further processing
+                                                $.ajax({
+                                                    url: '/filter-results',  // Replace with the URL of your server-side script
+                                                    type: 'POST',
+                                                    data: data,
+                                                    success: function (response) {
+                                                        console.log(response);
+                                                        // Handle the response from the server
+                                                        console.log('Filtered results received:', response);
+                                                        // Update the UI with the filtered results
+                                                        // ...
+                                                        var productList = $('#productListCurrent');
+                                                        productList.empty(); // Empty the existing products
 
-          // Check if the response contains filtered products
-          if (response.length > 0) {
-            // Loop through the filtered products and append them to the product list
-            
-            response.forEach(function(product) {
-  var productHtml = `
+                                                        // Check if the response contains filtered products
+                                                        if (response.length > 0) {
+                                                            // Loop through the filtered products and append them to the product list
+
+                                                            response.forEach(function (product) {
+                                                                var productHtml = `
     <div class="col-lg-4 col-md-6 col-sm-6">
       <div class="product__item mt-3">
           <div class="product__item__pic set-bg">
@@ -499,22 +525,21 @@ $(document).ready(function() {
                                                         &#x20B9;${product.productpromotionalprice} 
                                                         <span>&#x20B9;${product.productregularprice}</span><br>
                                                                 </div>
-                                                                ${
-            product.productQuantity > 0
-              ? `<div class="badge text-success">In stock</div>`
-              : `<span class="badge text-danger">Out of stock</span>`
-          }
+                                                                ${product.productQuantity > 0
+                                                                        ? `<div class="badge text-success">In stock</div>`
+                                                                        : `<span class="badge text-danger">Out of stock</span>`
+                                                                    }
                                                     </div>
   `;
 
-  productList.append(productHtml);
-});
+                                                                productList.append(productHtml);
+                                                            });
 
 
 
-          } else {
-            // Display a message if no filtered products found
-            var noProductsHtml = `
+                                                        } else {
+                                                            // Display a message if no filtered products found
+                                                            var noProductsHtml = `
 
 <div class="text-center "><img style=" display: block;
 margin-left: auto;
@@ -523,26 +548,135 @@ width: 50%;" src="img/no-item.png" alt="">
    
 </div>
             `;
-            productList.append(noProductsHtml);
-          }
+                                                            productList.append(noProductsHtml);
+                                                        }
 
-            },
-            error: function() {
-                console.log('Error occurred while filtering results!');
-            }
-        });
-    });
+                                                    },
+                                                    error: function () {
+                                                        console.log('Error occurred while filtering results!');
+                                                    }
+                                                });
+                                            });
 
-    // Function to retrieve selected values based on the provided selector
-    function getSelectedValues(selector) {
-        var selectedValues = [];
-        $(selector).each(function() {
-            selectedValues.push($(this).val());
-        });
-        return selectedValues;
-    }
+
+
+                                            // Function to retrieve selected values based on the provided selector
+                                            function getSelectedValues(selector) {
+                                                var selectedValues = [];
+                                                $(selector).each(function () {
+                                                    selectedValues.push($(this).val());
+                                                });
+                                                return selectedValues;
+                                            }
+                                        });
+                                       
+                                     $(document).ready(function () {
+  // Search button click event
+
+   $("#searchButton").click(function (event) {
+    console.log("hai");
+    event.preventDefault(); // Prevent the default form submission
+
+    // Retrieve the search query
+    var searchQuery = $("#searchInput").val().trim();
+    console.log(searchQuery);
+
+    // Create the data object to send via AJAX
+    var data = {
+      query: searchQuery,
+    };
+
+    // Send the search query to the server-side for processing
+    $.ajax({
+      url: "/productSearch", // Replace with the URL of your server-side search route
+      type: "POST",
+      data: data,
+      success: function (response) {
+        // Handle the response from the server
+        console.log("Search results received:", response);
+        // Update the UI with the search results
+        var productList = $("#productListCurrent");
+        productList.empty(); // Empty the existing products
+
+            // Check if the response contains filtered products
+            if (response.length > 0) {
+                                                            // Loop through the filtered products and append them to the product list
+
+                                                            response.forEach(function (product) {
+                                                                var productHtml = `
+    <div class="col-lg-4 col-md-6 col-sm-6">
+      <div class="product__item mt-3">
+          <div class="product__item__pic set-bg">
+            <a href="/product-details/${product._id}">
+                <div class="product__item__pic2 set-bg">
+            <img src="uploads/${product.productimage[0]}" alt="">
+            </div>
+            </a>
+            <ul class="product__hover">
+                <li><a href="uploads/${product.productimage[0]}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                <li>
+  <a href="#" data-value="${product._id}" class="add-produtToWishlist btn-product-icon btn-wishlist btn-expandable">
+    <span class="icon_heart_alt"></span>
+  </a>
+</li>
+
+                <li><a onclick="cartIncrement('${product._id}')"><span class="icon_bag_alt"></span></a></li>
+
+
+            </ul>
+          </div>
+        </div>
+                                                    <div class="product__item__text">
+                                                        <div class="product__name">
+                                                            ${product.productname} <br>
+                                                    </div>
+                                                    <div class="rating">
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                    </div>
+                                                    ${product.productdescription}<br>
+                                                    <div class="promo">
+                                                        &#x20B9;${product.productpromotionalprice} 
+                                                        <span>&#x20B9;${product.productregularprice}</span><br>
+                                                                </div>
+                                                                ${product.productQuantity > 0
+                                                                        ? `<div class="badge text-success">In stock</div>`
+                                                                        : `<span class="badge text-danger">Out of stock</span>`
+                                                                    }
+                                                    </div>
+  `;
+
+                                                                productList.append(productHtml);
+                                                            });
+
+
+
+                                                        } else {
+                                                            // Display a message if no filtered products found
+                                                            var noProductsHtml = `
+
+<div class="text-center "><img style=" display: block;
+margin-left: auto;
+margin-right: auto;
+width: 50%;" src="img/no-item.png" alt="">
+   
+</div>
+            `;
+                                                            productList.append(noProductsHtml);
+                                                        }
+
+                                                    },
+                                                    error: function () {
+                                                        console.log('Error occurred while filtering results!');
+                                                    }
+                                                });
+                                            });
+
 });
 
 
-</script>
-                           
+
+                                    </script>

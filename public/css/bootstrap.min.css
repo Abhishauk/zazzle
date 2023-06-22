@@ -253,7 +253,8 @@ textarea {
     margin: 0;
     font-family: inherit;
     font-size: inherit;
-    line-height: inherit
+    line-height: inherit;
+    /* height:34px */
 }
 
 button,
@@ -285,6 +286,7 @@ button:not(:disabled) {
     border: white;
     /* margin-top: 18px; */
     margin-bottom: 19px;
+    /* background-color: #161515; */
 }
 
 [type=button]::-moz-focus-inner,
@@ -5480,7 +5482,7 @@ input[type=submit].btn-block {
 
 .accordion>.card>.card-header {
     border-radius: 0;
-    margin-bottom: -1px
+    /* margin-bottom: -1px */
 }
 
 .breadcrumb {

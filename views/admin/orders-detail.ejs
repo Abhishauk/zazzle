@@ -47,7 +47,7 @@
         <div class="content-header">
             <div>
                 <h2 class="content-title card-title">Order detail</h2>
-                <p>Details for Order ID: <%= Order._id %>
+                <p>Details for Order ID: <%= Order.orderId %>
                 </p>
             </div>
         </div>
@@ -60,7 +60,7 @@
                                 <%= Order.orderDate.toISOString().split('T')[0] %>
                             </b>
                         </span> <br>
-                        <small class="text-muted">Order ID: <%= Order._id %></small>
+                        <small class="text-muted">Order ID: <%= Order.OrderId %></small>
                     </div>
                     <div class="col-lg-6 col-md-6 ms-auto text-md-end">
                         <select class="form-select d-inline-block mb-lg-0 mb-15 mw-200" id="orderSelect">

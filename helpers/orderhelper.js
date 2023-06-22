@@ -2,7 +2,7 @@ const orderSchema = require('../models/ordermodels');
 const addressSchema = require('../models/addressmodels');
 const { loginpost } = require('../controller/usercontroller');
 const ObjectId = require('mongoose').Types.ObjectId;
-
+const shortid = require('shortid');
 
 function orderDate() {
     const date = new Date();
@@ -42,8 +42,11 @@ module.exports = {
                 couponAmount=order.couponAmount
                 console.log("lklklkl",couponAmount);
             }
+            const orderid = shortid.generate();
+
             let ordered = new orderSchema({
                 user: userId,
+                orderId:orderid,
                 address: addressId,
                 orderDate: date,
                 totalAmount: totalAmount,
@@ -85,31 +88,32 @@ module.exports = {
     },
 
     getAllOrderDetailsOfAUser: (userId) => {
-
         return new Promise(async (resolve, reject) => {
+          try {
             const userOrderDetails = await orderSchema.aggregate([
-                {
-                    $match: { user: new ObjectId(userId) }
-                },
-                {
-                    $lookup: {
-                        from: 'addresses',
-                        localField: 'address',
-                        foreignField: 'address._id',
-                        as: 'addressLookedup'
-                    }
-                },
-
-            ])
-
-            console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-            console.log("This is aggregation resilt", userOrderDetails);
-            console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-
-            resolve(userOrderDetails)
-        })
-    },
+              {
+                $match: { user: new ObjectId(userId) }
+              },
+              {
+                $lookup: {
+                  from: 'addresses',
+                  localField: 'address',
+                  foreignField: 'address._id',
+                  as: 'addressLookedup'
+                }
+              },
+              {
+                $sort: { createdAt: -1 }
+              }
+            ]);
+      
+            resolve(userOrderDetails);
+          } catch (error) {
+            reject(error);
+          }
+        });
+      },
+      
     getOrderedProductsDetailsOrderSuccess: (orderId) => {
     console.log("uuuuu");
     console.log(orderId);

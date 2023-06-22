@@ -13,6 +13,7 @@ const couponhelper = require("../helpers/couponhelper");
 const wishlisthelper = require("../helpers/wishlisthelper");
 const producthelper = require("../helpers/producthelper");
 const wallethelper = require("../helpers/wallethelper");
+const validatehelper = require("../helpers/validatehelper");
 const ObjectId = require("mongoose").Types.ObjectId;
 const Razorpay = require("razorpay");
 
@@ -40,8 +41,7 @@ module.exports = {
       console.log(req.session.user);
       let username = req.session.userid.username;
       let userId = req.session.userid._id;
-      let products = await product.find();
-      console.log(products);
+      let products = await product.find().sort({_id:-1}).limit(8);
       wishListCount = await wishlisthelper.getWishListCount(userId);
       cartCount = await userhelper.getCartCount(userId);
       console.log(wishListCount);
@@ -57,13 +57,14 @@ module.exports = {
   },
   landingpage: async (req, res) => {
     try {
-      let products = await product.find();
+      let products = await product.find().sort({_id:-1}).limit(8);
       console.log(products);
       res.render("shop/home.ejs", { products });
     } catch (error) {
       console.error(error);
     }
   },
+
   usercontact: async (req, res) => {
     try {
       
@@ -92,21 +93,88 @@ module.exports = {
       console.error(err);
     }
   },
-  signuppost: function(req, res) {
-    try {
-      userhelper.dosignup(req.body).then(response => {
-        let msg = "user already exist";
-        if (response.status) {
-          res.render("shop/usersign-up.ejs", { msg });
-        } else {
-          req.session.user = true;
-          req.session.userid = response.user;
-          res.redirect("/");
-        }
-      });
-    } catch (err) {
-      console.error(err);
-    }
+  // signuppost: function(req, res) {
+  //   try {
+  //     userhelper.dosignup(req.body).then(response => {
+  //       let msg = "user already exist";
+  //       if (response.status) {
+  //         res.render("shop/usersign-up.ejs", { msg });
+  //       } else {
+  //         req.session.user = true;
+  //         req.session.userid = response.user;
+  //         res.redirect("/");
+  //       }
+  //     });
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // },
+  signuppost: async (req, res) => {
+    console.log("1");
+    return new Promise(async (resolve, reject)=> {
+      try {
+        user.findOne({ email: req.body.email }).then(async(oldUser, err) => {
+          if (err) {
+            reject(err);
+            } else {
+              console.log("3");
+              console.log(oldUser);
+            if (oldUser) {
+              let msg = "User already exist"
+              res.render('shop/usersignup.ejs',{ msg })
+            }
+            else {
+              console.log("4");
+              console.log(req.body.phonenumber);
+              req.session.signupdata=req.body
+              console.log(req.session.signupdata);
+              let otpsend=await validatehelper.checkotpSignup(req.body.phonenumber)
+              console.log("7");
+              console.log(otpsend);
+              if(otpsend.status==true){
+                let phonenumber=req.body.phonenumber
+                console.log("8");
+                console.log(phonenumber);
+                console.log(otpsend.msg);
+                res.render('shop/verifyotpsignup.ejs',{phonenumber} )
+                // validatehelper.verifyOTPSignup(body.mobile)
+              }
+             
+              // var saltRounds = 10;
+              // var password = body.password.toString();
+              // bcrypt.hash(password, saltRounds, async function (err, newpassword) {
+              //   if (err) {
+              //     reject(err);
+              //   } else {
+              //     var newUser = new user({
+              //       name: body.name,
+              //       email: body.email,
+              //       password: newpassword,
+              //       phonenumber: body.mobile,
+              //       status: false
+
+              //     });
+                  //  newUser.save().then((err, savedUser)=> {
+                  //   if (err) { 
+                  //     reject(err);
+                  //   } else {
+
+                  //     resolve({ status: false, user: savedUser });
+                  //   }
+                  // });
+                //   var savedUser = await newUser.save();
+                //   resolve({ status: false, user: savedUser });
+                // }
+              // });
+            }
+
+          }
+        });
+      } catch (err) {
+        console.error(err);
+        reject(err);
+      }
+    });
   },
   loginpost: (req, res) => {
     try {
@@ -724,23 +792,36 @@ module.exports = {
   // Import the required modules
 
   // Add the search route
-  search: async (req, res) => {
-    try {
-      const query = req.query.query;
-      console.log(query);
-      // Perform the search query using the provided search term
-      const products = await product
-        .find({ productname: { $regex: new RegExp("^" + query, "i") } })
-        .lean();
-      console.log(products);
-      res.redirect(
-        "/shop?array=" + encodeURIComponent(JSON.stringify(products))
-      );
-    } catch (err) {
-      console.error(err);
-      res.status(500).send("Internal Server Error");
-    }
-  },
+  // search: async (req, res) => {
+  //   try {
+  //     const query = req.query.query;
+  //     console.log(query);
+  //     // Perform the search query using the provided search term
+  //     const products = await product
+  //       .find({ productname: { $regex: new RegExp("^" + query, "i") } })
+  //       .lean();
+  //     console.log(products);
+  //     res.redirect(
+  //       "/shop?array=" + encodeURIComponent(JSON.stringify(products))
+  //     );
+  //   } catch (err) {
+  //     console.error(err);
+  //     res.status(500).send("Internal Server Error");
+  //   }
+  // },
+   productSearch: async (req, res) => {
+     try {
+      const searchQuery = req.body.query;
+  
+      const searchResults = await product.find({ productname: { $regex:new RegExp('^' + searchQuery, 'i') }}).lean();
+  
+      console.log(searchResults);
+      res.json(searchResults);
+     } catch (error) {
+      console.error('Error occurred while performing the search:', error);
+      res.status(500).send('Failed to perform the search');
+     }
+   },
   // applyCoupon: async (req, res) => {
   //   try {
   //     const user = req.session.userid;

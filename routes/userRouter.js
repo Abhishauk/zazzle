@@ -3,6 +3,7 @@
 /* GET home page. */
 const usercontroller= require('../controller/usercontroller');
 const userhelper = require('../helpers/userhelper');
+const validatehelper = require("../helpers/validatehelper");
 const categorycontroller = require ("../controller/categorycontroller")
 const {userauthentication,userCheck} = require('../middleware/session')
 
@@ -25,12 +26,14 @@ router.get('/order-list',usercontroller.orderlist)
 router.get('/category/:id',categorycontroller.category)
 router.get('/order-detailes/:id',usercontroller.orderdetailes)
 router.get('/profile',usercontroller.profile)
-router.get('/search',usercontroller.search)
+// router.get('/search',usercontroller.search)
 router.get('/wishlist',userCheck,usercontroller.wishlist);
 
 
 router.post('/signup',usercontroller.signuppost)
 router.post('/login',usercontroller.loginpost)
+router.post('/productSearch',usercontroller.productSearch)
+router.post('/verifyotpSignup',validatehelper.verifyOTPSignup )
 router.post('/checkOTP',usercontroller.checkOTP)
 router.post('/checkOTPforgot',usercontroller.checkOTPforgot)
 router.post('/verifyotp',userauthentication,userhelper.verifyOTP)

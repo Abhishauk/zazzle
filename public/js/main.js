@@ -259,8 +259,8 @@ Created: Colorib
 
 
 $(document).ready(function() {
-    $('li').click(function() {
-        $('li.menu-item').removeClass("active");
-        $(this).addClass("active");
-    });
-});
+    var currentUrl = window.location.pathname;
+    $('.menuList > li > a[href="'+currentUrl+'"]').parent().addClass('active');
+  });
+  
+  

@@ -15,6 +15,7 @@ const authToken = "330ec7d38f17b216f78127ef14e648a1";
 const client = require("twilio")(accountSid, authToken);
 const ObjectId = require("mongoose").Types.ObjectId;
 const Razorpay = require("razorpay");
+
  
 const key_id=process.env.key_id;
 const key_secret=process.env.key_secret;
@@ -387,6 +388,11 @@ module.exports = {
       const productId = body.product;
       const cartId = body.cart;
       const count = body.count;
+      let Product = await product.findById(productId)
+      console.log("ooooppp");
+      console.log(Product);
+     console.log(Product.productQuantity);
+     productQuantity=Product.productQuantity
       return new Promise((resolve, reject) => {
         if (body.count == -1 && body.quantity == 1) {
           cart
@@ -397,7 +403,12 @@ module.exports = {
             .then(response => {
               resolve({ response: response, remove: true });
             });
-        } else {
+        }
+        else if(productQuantity==body.quantity&& body.count==1){
+          resolve({response:response,limit:true});
+
+        }
+         else {
           cart
             .updateOne(
               { _id: cartId, "products.productId": productId },

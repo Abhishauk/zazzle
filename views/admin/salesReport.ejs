@@ -47,26 +47,15 @@
                                 <td>
                                     <%= i+1 %>
                                 </td>
-                                <td><b>
-                                        <%= sales[i]._id %>
-                                    </b></td>
-                                <td>
-                                    <%= sales[i].userDetails[0].name %>
-                                </td>
-                                <td>
-                                    <%= sales[i].orderDate %>
-                                </td>
-                                <td>
-                                    <%= sales[i].paymentMethod %>
-                                </td>
+                                <td><b><%= sales[i]orderId%></b></td>
+                                <td><%= sales[i].userDetails[0].username %></td>
+                                <td><%= sales[i].orderDate %></td>
+                                <td><%= sales[i].paymentMethod %></td>
                                 <td><span class="badge rounded-pill alert-warning">
-                                        <%= sales[i].orderStatus %>
+                                    <%= sales[i].orderStatus %>
                                     </span></td>
-                                <td>
-                                    <%= sales[i].totalAmount %>
-                                </td>
-
-                            </tr>
+                                <td><%= sales[i].totalAmount %></td>
+                                </tr>
                             <% } %>
 
                     </tbody>

@@ -49,7 +49,7 @@
                                     <tbody>
                                         <% orders.forEach(function(orders){ %>
                                         <tr>
-                                            <td><h5><%=orders.orderDate%></h5></td>
+                                            <td><h5><%=orders.orderDate.toISOString().split('T')[0]%></h5></td>
                                             <td><%=orders.totalAmount %></td>
                                             <td><%=orders.paymentMethod %>  </td>
                                             <td>
