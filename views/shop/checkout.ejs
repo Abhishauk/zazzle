@@ -453,11 +453,16 @@
                                         console.log(response)
 
                                     }, 1200)
-                                } else {
+                                }else if(response.status==false){
                                     console.log("3333333333333333333");
                                     console.log(response.response);
                                     console.log(response.status);
                                     razorpayPayment(response)
+                                } else {
+                                  Swal.fire(
+                                       response.msg,
+                                       'warning'
+                                  )
 
 
                                     // document.querySelector('.cart-count').textContent=val+1
@@ -619,13 +624,6 @@
         })
             .done((res) => {
                 if (res.status) {
-                    console.log("hello");
-                    console.log(res);
-                    console.log(res.totalAmount);
-                    // document.getElementById('couponApplyFail').classList.add('d-none')
-                    // document.getElementById('couponApplySuccess').classList.remove('d-none')
-                    // document.getElementById('couponApplySuccess').innerHTML = res.message
-                    // document.getElementById('discount').innerHTML = -res.discount
                     document.getElementById('total').innerHTML = res.totalAmount
                     document.getElementById('discount').innerHTML = res.discount
                     document.getElementById('couponAmount').value = res.discount
@@ -639,56 +637,9 @@
                     showConfirmButton: false,
                     timer: 1600
                 })
-                    // document.getElementById('couponApplySuccess').classList.add('d-none')
-                    // document.getElementById('couponApplyFail').classList.remove('d-none')
-                    // document.getElementById('couponApplyFail').innerHTML = res.message
-
-
                 }
             })
     }
-
-//     $(document).ready(function () {
-//                 $('#placeOrder-form').submit(function (e) {
-//                     console.log("aaaa");
-//                     e.preventDefault(); // Prevent the form from submitting through the default action
-
-//                     // Collect the form data
-//                     var formData = {
-//                         name: $('#name').val(),
-//                         address: $('#address').val(),
-//                         city: $('#city').val(),
-//                         state: $('#state').val(),
-//                         postcode: $('#postcode').val(),
-//                         phonenumber: $('#phonenumber').val(),
-//                         email: $('#email').val()
-//                     };
-
-//                     // Send the data using AJAX
-//                     $.ajax({
-//                         type: 'POST', // Change the type to your desired method (e.g., POST, GET, etc.)
-//                         url: '/addAddress', // Replace with the URL where you want to send the form data
-//                         data: formData,
-//                         success: function (response) {
-//                             console.log("bbb");
-//                             Swal.fire({
-//                                 position: 'center',
-//                                 icon: 'success',
-//                                 title: 'Address added to Successfully',
-//                                 showConfirmButton: false,
-//                                 timer: 1600
-//                             })
-//                                 .then(() => {
-//                                     location.reload()
-//                                 })
-//                         },
-//                         error: function (xhr, status, error) {
-//                             // Handle the error response
-//                             console.error(xhr.responseText);
-//                         }
-//                     });
-//                 });
-//             });
 $(document).ready(function () {
     // Define error message elements
     var nameError = $('#name-error');
