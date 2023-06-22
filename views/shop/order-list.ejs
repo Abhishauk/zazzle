@@ -29,6 +29,56 @@
             <% }else{%>
                 <%-include('../partials/userheader')-%>
                     <%  }  %>
+
+                      <!-- Offcanvas Menu Begin -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="offcanvas__close">+</div>
+        <ul class="offcanvas__widget">
+            <li><span class="icon_search search-switch"></span></li>
+            <li>
+              <a href="/wishlist"
+                ><span class="icon_heart_alt">   </span>
+                <% if(username && wishListCount) {%>
+                  <div class="tip"> 
+                  <span class="wishlist-count" id="wishListCount">
+                      <%= wishListCount %>
+                  </span> 
+                  </div>
+                  <% } %>
+              </a>  
+            </li>
+            <li>
+              <a href="/shop-cart"
+                ><span class="icon_bag_alt"></span>
+                <% if (username && cartCount) { %>
+                <div class="tip">     
+                    <span class="wishlist-count" id="wishListCount">
+                        <%= cartCount %>
+                    </span>  
+                </div>
+                <% } %>
+              </a>
+            </li>
+        </ul>
+        <div class="offcanvas__logo">
+            <a href="./index.html"><img src="img/logo.png" alt=""></a>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <div class="offcanvas__auth">
+            <% var username=username || '' ; %> 
+              <% if (username) { %>
+              <a href="/profile"><span class="text-dark font-weight-bold text-center mr-3">
+                <%= username %></a> 
+              </span>
+              <a href="/logout">Logout</a>
+              <% }else{%>
+              <a href="/login">Login</a>
+              <a href="/signup">Sign up</a>
+                  <% } %>
+        </div>
+    </div>
+    <!-- Offcanvas Menu End -->
                     <div class="col-md-12">
                         <div class="order_review">
                             <div class="mb-20">

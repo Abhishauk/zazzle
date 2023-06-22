@@ -10,94 +10,58 @@ const orderhelper = require("../helpers/orderhelper");
 const Order = require("../models/ordermodels");
 const Offer = require("../models/offermodels");
 const ObjectId = require("mongoose").Types.ObjectId;
-const admin = require("../models/adminmodels")
-const bcrypt = require('bcrypt')
+const admin = require("../models/adminmodels");
+const bcrypt = require("bcrypt");
 dotenv.config();
 module.exports = {
-  adminlogin: function(req, res) {
+  adminlogin: function (req, res) {
     try {
       res.render("admin/adminlogin");
     } catch (err) {
       console.error(err);
     }
   },
-  // adminpostlogin: async (req, res) => {
-  //   try {
-  //     if (req.body.email == "admin@gmail.com" && req.body.password == "123") {
-  //       console.log(req.body);
-  //       req.session.admin = true;
-  //       res.redirect("/admin/adminpanel");
-  //     } else {
-  //       let msg = "invalid email or password";
-  //       res.render("admin/adminlogin", { msg });
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // },
   adminpostlogin: async (req, res) => {
     try {
-      console.log(req.body);
-      // if (req.body.email == "admin@gmail.com" && req.body.password == "123") {
-      //   req.session.admin = true;
-
-      //   res.redirect("/admin/adminpanel");
-      // } else {
-      //   let msg = "Invalid email or password";
-      //   res.render("admin/adminlogin.ejs", { msg });
-      // }
       admin.findOne({ username: req.body.email }).then((validuser, err) => {
-
         if (err) {
-          reject(err)
-        }
-        else {
+          reject(err);
+        } else {
           if (validuser) {
-            console.log(validuser);
-            bcrypt.compare(req.body.password, validuser.password).then((isPasswordMatch, err) => {
-              if (err) {
-                reject(err);
-              } else {
-                if (isPasswordMatch) {
-                  req.session.admin = true;
-                   res.redirect("/admin/adminpanel");
+            bcrypt
+              .compare(req.body.password, validuser.password)
+              .then((isPasswordMatch, err) => {
+                if (err) {
+                  reject(err);
                 } else {
-                  console.log("Login Failed");
-                  let msg = "Incorrect password"
-                  res.render("admin/adminlogin.ejs", { msg });;
+                  if (isPasswordMatch) {
+                    req.session.admin = true;
+                    res.redirect("/admin/adminpanel");
+                  } else {
+                    let msg = "Incorrect password";
+                    res.render("admin/adminlogin.ejs", { msg });
+                  }
                 }
-              }
-            });
-
+              });
           } else {
-            console.log("no user");
             let msg = "Invalid email ";
             res.render("admin/adminlogin.ejs", { msg });
           }
-
         }
-      })
-    
+      });
     } catch (error) {}
   },
   adminpanel: async (req, res) => {
     try {
-      console.log("sidharth");
       const orderStatus = await orderhelper.getAllOrderStatusesCount();
       const chartData = await adminhelper.getChartDetails();
       const dashboardDetails = await adminhelper.getDashboardDetails();
-      console.log(chartData);
       dashboardDetails.totalRevenue = currencyFormat(
         dashboardDetails.totalRevenue
       );
       dashboardDetails.monthlyRevenue = currencyFormat(
         dashboardDetails.monthlyRevenue
       );
-      console.log("dashboardDetails", dashboardDetails);
-      //     res.render("admin/admin-home", { orderStatus, chartData, dashboardDetails, layout: "layouts/adminLayout" });
-      //   } catch {
-      //     res.status(500);
-      //   }
       const data = {
         dashboardDetails,
         orderStatus,
@@ -111,7 +75,7 @@ module.exports = {
     }
   },
 
-  adminlogout: function(req, res) {
+  adminlogout: function (req, res) {
     try {
       req.session.admin = false;
       res.redirect("/admin");
@@ -121,11 +85,8 @@ module.exports = {
   },
   userlist: async (req, res) => {
     try {
-  
-
-      const users = await user.find()
-      console.log(users);
-      res.render("admin/user-list", { users});
+      const users = await user.find();
+      res.render("admin/user-list", { users });
     } catch (err) {
       console.log(err);
     }
@@ -134,7 +95,6 @@ module.exports = {
     try {
       let userId = req.params._id;
       const users = await user.findById(userId);
-
       res.render("admin/user-detail", { users });
     } catch (err) {
       console.error(err);
@@ -143,8 +103,6 @@ module.exports = {
   categories: async (req, res) => {
     try {
       if (req.session.admin) {
-        // const viewCategory = await adminhelper.getallcategory();
-        // let products = await product.find()
         let categories = await category.find();
         res.render("admin/categories.ejs", { categories });
       }
@@ -152,26 +110,10 @@ module.exports = {
       console.error(err);
     }
   },
-  // addcategory: async (req, res) => {
-  //   try {
-  //     console.log("hhhhh");
-  //     console.log(req.body);
-  //     adminhelper.addcategory(req.body).then((response) => {
-  //       console.log("haiwa");
-  //       console.log(response);
-  //       res.json(response)
-  //     });
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // },.
-
   addcategory: (req, res) => {
     try {
-      adminhelper.addcategory(req.body).then(response => {
-        console.log(response);
+      adminhelper.addcategory(req.body).then((response) => {
         res.json(response);
-        // res.redirect("/admin/categories")
       });
     } catch (err) {
       console.error(err);
@@ -179,9 +121,7 @@ module.exports = {
   },
   productlist: async (req, res) => {
     try {
-  
-
-      let products = await product.find()
+      let products = await product.find();
       res.render("admin/products-list.ejs", { products });
     } catch (err) {
       console.error(err);
@@ -197,10 +137,8 @@ module.exports = {
   },
   addproductpost: async (req, res) => {
     try {
-      console.log(req.file);
-      console.log(req.body);
       let images = req.files;
-      adminhelper.addproductpost(req.body, images).then(response => {
+      adminhelper.addproductpost(req.body, images).then((response) => {
         res.redirect("/admin/products-list");
       });
     } catch (error) {
@@ -210,11 +148,7 @@ module.exports = {
   blockuser: async (req, res) => {
     try {
       let userid = req.params.id;
-      // console.log(userid);
-      adminhelper.blockuser(userid).then(responce => {
-        console.log(responce);
-
-        console.log(req.session.userid);
+      adminhelper.blockuser(userid).then((responce) => {
         req.session.user = false;
         res.redirect("/admin/user-list");
       });
@@ -223,9 +157,7 @@ module.exports = {
   unblockuser: async (req, res) => {
     try {
       let userid = req.params.id;
-      // console.log(userid);
-      adminhelper.unblockuser(userid).then(responce => {
-        console.log(responce);
+      adminhelper.unblockuser(userid).then((responce) => {
         res.redirect("/admin/user-list");
       });
     } catch (error) {}
@@ -233,7 +165,7 @@ module.exports = {
   deleteproduct: async (req, res) => {
     try {
       let productid = req.params.id;
-      adminhelper.deleteproduct(productid).then(response => {
+      adminhelper.deleteproduct(productid).then((response) => {
         res.redirect("/admin/products-list");
       });
     } catch (error) {}
@@ -241,7 +173,7 @@ module.exports = {
   activeproduct: async (req, res) => {
     try {
       let productid = req.params.id;
-      adminhelper.activeproduct(productid).then(response => {
+      adminhelper.activeproduct(productid).then((response) => {
         res.redirect("/admin/products-list");
       });
     } catch (error) {}
@@ -249,8 +181,7 @@ module.exports = {
   deactiveproduct: async (req, res) => {
     try {
       let productid = req.params.id;
-      console.log(productid);
-      adminhelper.deactiveproduct(productid).then(response => {
+      adminhelper.deactiveproduct(productid).then((response) => {
         res.redirect("/admin/products-list");
       });
     } catch (error) {}
@@ -258,7 +189,6 @@ module.exports = {
   editproduct: async (req, res) => {
     try {
       let productid = req.params.id;
-      console.log(productid);
       let productdetail = await product.findById(productid);
       let categories = await category.find();
       res.render("admin/editproduct", { productdetail, categories });
@@ -267,11 +197,8 @@ module.exports = {
   editproductpost: async (req, res) => {
     try {
       let productid = req.params.id;
-      console.log(productid);
-      console.log(req.body);
-      console.log(req.files);
       let images = req.files;
-      adminhelper.editproduct(req.body, images, productid).then(response => {
+      adminhelper.editproduct(req.body, images, productid).then((response) => {
         res.redirect("/admin/products-list");
       });
     } catch (error) {}
@@ -279,7 +206,7 @@ module.exports = {
   deletcategory: async (req, res) => {
     try {
       let categoryid = req.params.id;
-      adminhelper.deletcategory(categoryid).then(response => {
+      adminhelper.deletcategory(categoryid).then((response) => {
         res.redirect("/admin/categories");
       });
     } catch (error) {}
@@ -289,13 +216,12 @@ module.exports = {
       res.render("admin/forgotpassword");
     } catch (error) {}
   },
-  checkOTPforgot: function(req, res) {
-    adminhelper.checkOTPforgot(req.body).then(response => {
+  checkOTPforgot: function (req, res) {
+    adminhelper.checkOTPforgot(req.body).then((response) => {
       if (response.status) {
         let phonenumber = response.validUser.phonenumber;
         res.render("admin/verifyotp-admin.ejs", { phonenumber });
       } else {
-        console.log(response.msg2);
         let msg = response.msg;
         res.render("admin/forgotpassword", { msg });
       }
@@ -303,9 +229,7 @@ module.exports = {
   },
   orderlist: async (req, res) => {
     try {
-  
       let orders = await orderhelper.getAllOrders();
-      console.log(orders);
       res.render("admin/order-list", { orders });
     } catch (error) {
       console.log("erorrrrrr");
@@ -314,8 +238,6 @@ module.exports = {
 
   orderdetail: async (req, res) => {
     let orderId = req.params.id;
-    console.log(orderId);
-
     try {
       const order = await Order.aggregate([
         { $match: { _id: new ObjectId(orderId) } },
@@ -345,12 +267,6 @@ module.exports = {
           }
         }
       ]);
-
-      console.log(order);
-      console.log(order[0].address[0].address);
-      console.log(order[0].user.email);
-
-      console.log(order[0].orderedItems);
       res.render("admin/orders-detail", { Order: order[0] });
     } catch (err) {
       console.log(err);
@@ -360,8 +276,6 @@ module.exports = {
   cancelOrder: async (req, res) => {
     try {
       let orderId = req.params.id;
-
-      console.log(orderId);
       await Order.updateOne(
         { _id: orderId },
         {
@@ -376,7 +290,6 @@ module.exports = {
   ReturnOrder: async (req, res) => {
     try {
       let orderId = req.params.id;
-      console.log(orderId);
       await Order.updateOne(
         { _id: orderId },
         {
@@ -391,41 +304,38 @@ module.exports = {
   coupon: async (req, res) => {
     try {
       let coupon = await Coupon.find();
-      console.log(coupon);
       res.render("admin/coupon.ejs", { coupon });
     } catch (error) {}
   },
   addcoupon: async (req, res) => {
     try {
       let couponAmount = parseInt(req.body.couponAmount);
-  
+
       if (couponAmount < 50 || couponAmount > 500) {
         res.json({ status: false });
       } else {
-        adminhelper.addCoupon(req.body)
+        adminhelper
+          .addCoupon(req.body)
           .then((response) => {
             res.json(response);
           })
           .catch((error) => {
-            res.status(500).json({ error: 'Coupon could not be added' });
+            res.status(500).json({ error: "Coupon could not be added" });
           });
       }
     } catch (error) {
-      res.status(500).json({ error: 'An error occurred' });
+      res.status(500).json({ error: "An error occurred" });
     }
   },
-  
+
   salesReportPage: async (req, res) => {
     const sales = await adminhelper.getAllDeliveredOrders();
-    console.log("sales", sales);
-    sales.forEach(order => {
+    sales.forEach((order) => {
       order.orderDate = dateFormat(order.orderDate);
-      // order.totalAmount=dateFormat(order.totalAmount)
     });
     res.render("admin/salesReport", { sales });
   },
   salesReport: async (req, res) => {
-    console.log(req.body);
     try {
       let { startDate, endDate } = req.body;
 
@@ -448,12 +358,9 @@ module.exports = {
   searchadmin: async (req, res) => {
     try {
       const query = req.query.query;
-      console.log(query);
-      // Perform the search query using the provided search term
       const products = await product
         .find({ productname: { $regex: query, $options: "i" } })
         .lean();
-      console.log(products);
       res.redirect(
         "/product-list?array=" + encodeURIComponent(JSON.stringify(products))
       );
@@ -464,33 +371,13 @@ module.exports = {
   },
   offer: async (req, res) => {
     try {
-      // const count = parseInt(req.query.count) || 3;
-      // const page = parseInt(req.query.page) || 1;
-      // const totalCount = await product.countDocuments();
-      // const startIndex = (page - 1) * count;
-      // const totalPages = Math.ceil(totalCount / count);
-
-      // Generate a random offset based on the total count and the page size
-      // const randomOffset = Math.floor(Math.random() * (totalCount - count));
-      // const endIndex = Math.min(count, totalCount - startIndex);
-      // const pagination = {
-      //   totalCount: totalCount, // change this to `totalCount` instead of `totalProductsCount`
-      //   totalPages: totalPages,
-      //   page: page,
-      //   count: count,
-      //   startIndex: startIndex,
-      //   endIndex: endIndex
-      // };
       let Category = await category.find();
-      let offer = await Offer.find()
-      console.log(category);
-      res.render("admin/offer.ejs", { Category, offer});
+      let offer = await Offer.find();
+      res.render("admin/offer.ejs", { Category, offer });
     } catch (error) {}
   },
   addOffer: async (req, res) => {
     try {
-      console.log("mmjj");
-      console.log(req.body);
       adminhelper.addOffer(req.body);
       res.redirect("/admin/offer");
     } catch (error) {}
@@ -498,7 +385,7 @@ module.exports = {
   activeOffer: async (req, res) => {
     try {
       let offerId = req.params.id;
-      adminhelper.activeOffer(offerId).then(response => {
+      adminhelper.activeOffer(offerId).then((response) => {
         res.json(response);
       });
     } catch (error) {}
@@ -506,35 +393,30 @@ module.exports = {
   deactiveOffer: async (req, res) => {
     try {
       let offerId = req.params.id;
-      adminhelper.deactiveOffer(offerId).then(response => {
+      adminhelper.deactiveOffer(offerId).then((response) => {
         res.json(response);
       });
     } catch (error) {}
   },
-  deleteOffer:async(req,res)=>{
+  deleteOffer: async (req, res) => {
     try {
-        let offerId=req.params.id
-        adminhelper.deleteOffer(offerId).then((response)=>{
-            res.json(response)
-        })
-    } catch (error) {
-        
-      }
-    },
-deletecoupon:async(req,res)=>{
-  try {
-      let couponId=req.params.id
-      adminhelper.deleteCoupon(couponId).then((response)=>{
-          res.json(response)
-      })
-  } catch (error) {
-      
-      }
-    },
+      let offerId = req.params.id;
+      adminhelper.deleteOffer(offerId).then((response) => {
+        res.json(response);
+      });
+    } catch (error) {}
+  },
+  deletecoupon: async (req, res) => {
+    try {
+      let couponId = req.params.id;
+      adminhelper.deleteCoupon(couponId).then((response) => {
+        res.json(response);
+      });
+    } catch (error) {}
+  },
   orderDelivery: async (req, res) => {
     try {
       let orderId = req.params.id;
-      console.log(orderId);
       await Order.updateOne(
         { _id: orderId },
         {
@@ -545,8 +427,7 @@ deletecoupon:async(req,res)=>{
       );
       res.json({ status: true });
     } catch (error) {}
-  },
-
+  }
 };
 function currencyFormat(amount) {
   return Number(amount).toLocaleString("en-in", {

@@ -4,7 +4,6 @@
 const usercontroller= require('../controller/usercontroller');
 const userhelper = require('../helpers/userhelper');
 const validatehelper = require("../helpers/validatehelper");
-const categorycontroller = require ("../controller/categorycontroller")
 const {userauthentication,userCheck} = require('../middleware/session')
 
 
@@ -23,10 +22,8 @@ router.get('/shop-cart',userCheck,usercontroller.shopcart)
 router.get('/checkout',userCheck,usercontroller.checkout)
 router.get('/ordersuccess',usercontroller.ordersuccess)
 router.get('/order-list',usercontroller.orderlist)
-router.get('/category/:id',categorycontroller.category)
 router.get('/order-detailes/:id',usercontroller.orderdetailes)
 router.get('/profile',usercontroller.profile)
-// router.get('/search',usercontroller.search)
 router.get('/wishlist',userCheck,usercontroller.wishlist);
 
 
@@ -57,9 +54,6 @@ router.put('/deleteaddress/:id',userCheck,usercontroller.deleteaddress)
 router.put('/editaddress/:id',usercontroller.editaddress)
 
 
-
-// router.get('/payment-failed',usercontroller.paymentfailed)
-// router.get('/categoryhoddie',categorycontroller.categoryhoddie)
 
 
 module.exports = router;

@@ -51,7 +51,7 @@
                                 <tr>
                                     <td><%=order.userDetails[0].username %></td>
                                     <td><%=order.orderId %></td>
-                                    <td><%=order.orderDate %></td>
+                                    <td> <%= Order.orderDate.toISOString().split('T')[0] %></td>
                                     <td>₹<%=order.totalAmount %></td>
                                     <td><%=order.paymentMethod %></td>
                                     <td>

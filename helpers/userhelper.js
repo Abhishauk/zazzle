@@ -16,9 +16,8 @@ const client = require("twilio")(accountSid, authToken);
 const ObjectId = require("mongoose").Types.ObjectId;
 const Razorpay = require("razorpay");
 
- 
-const key_id=process.env.key_id;
-const key_secret=process.env.key_secret;
+const key_id = process.env.key_id;
+const key_secret = process.env.key_secret;
 
 var instance = new Razorpay({
   key_id,
@@ -27,9 +26,8 @@ var instance = new Razorpay({
 
 dotenv.config();
 module.exports = {
-  dosignup: function(body) {
-    console.log(body);
-    return new Promise(function(resolve, reject) {
+  dosignup: function (body) {
+    return new Promise(function (resolve, reject) {
       try {
         user.findOne({ email: body.email }).then((oldUser, err) => {
           if (err) {
@@ -40,24 +38,25 @@ module.exports = {
             } else {
               var saltRounds = 10;
               var password = body.password.toString();
-              bcrypt.hash(password, saltRounds, async function(
-                err,
-                newpassword
-              ) {
-                if (err) {
-                  reject(err);
-                } else {
-                  var newUser = new user({
-                    username: body.username,
-                    email: body.email,
-                    password: newpassword,
-                    phonenumber: body.phonenumber,
-                    status: false
-                  });
-                  var savedUser = await newUser.save();
-                  resolve({ status: false, user: savedUser });
+              bcrypt.hash(
+                password,
+                saltRounds,
+                async function (err, newpassword) {
+                  if (err) {
+                    reject(err);
+                  } else {
+                    var newUser = new user({
+                      username: body.username,
+                      email: body.email,
+                      password: newpassword,
+                      phonenumber: body.phonenumber,
+                      status: false
+                    });
+                    var savedUser = await newUser.save();
+                    resolve({ status: false, user: savedUser });
+                  }
                 }
-              });
+              );
             }
           }
         });
@@ -67,7 +66,7 @@ module.exports = {
       }
     });
   },
-  doLogin: function(body) {
+  doLogin: function (body) {
     return new Promise((resolve, reject) => {
       try {
         user.findOne({ email: body.email }).then((validUser, err) => {
@@ -85,18 +84,12 @@ module.exports = {
                     if (isPasswordMatch) {
                       resolve({ status: true, user: validUser });
                     } else {
-                      console.log("Login Failed");
                       let msg = "Incorrect password";
                       resolve({ status: false, msg });
                     }
                   }
                 });
-              // } else {
-              //   console.log("User account is not active.");
-              //   resolve({ status: false });
-              // }
             } else {
-              console.log("No User Found!");
               let msg = "Email does not exist";
               resolve({ status: false, msg });
             }
@@ -108,9 +101,8 @@ module.exports = {
       }
     });
   },
-  checkOTP: function(body) {
-    console.log("25222525");
-    return new Promise(function(resolve, reject) {
+  checkOTP: function (body) {
+    return new Promise(function (resolve, reject) {
       try {
         user
           .findOne({ phonenumber: body.phonenumber })
@@ -119,11 +111,7 @@ module.exports = {
               reject(err);
             } else {
               if (validUser) {
-                console.log("//][][");
-                console.log(validUser);
-
                 twilioFunctions.generateOTP(validUser.phonenumber);
-                console.log("777778");
                 const msg1 = "OTP SENT!!";
                 resolve({ status: true, validUser, msg1 });
               } else {
@@ -138,8 +126,8 @@ module.exports = {
       }
     });
   },
-  checkOTPforgot: function(body) {
-    return new Promise(function(resolve, reject) {
+  checkOTPforgot: function (body) {
+    return new Promise(function (resolve, reject) {
       try {
         user
           .findOne({ phonenumber: body.phonenumber })
@@ -148,8 +136,6 @@ module.exports = {
               reject(err);
             } else {
               if (validUser) {
-                console.log(validUser);
-
                 twilioFunctions.generateOTP(validUser.phonenumber);
                 const msg1 = "OTP SENT!!";
                 resolve({ status: true, validUser, msg1 });
@@ -180,16 +166,9 @@ module.exports = {
           to: `+91${phonenumber}`,
           code: otp
         })
-        .then(async verificationChecks => {
+        .then(async (verificationChecks) => {
           if (verificationChecks.status === "approved") {
             let user1 = await user.findOne({ phonenumber: phonenumber });
-            // if (!user1) {
-            //   console.error(`User not found with phone number ${phonenumber}`);
-            //   res.render("shop/verifyOTP", {
-            //    msg2: "User not registered",
-            //     phone: phonenumber,
-            //   });
-            // } else {
             console.log(
               `User ${user1._id} logged in with phone number ${phonenumber}`
             );
@@ -223,7 +202,7 @@ module.exports = {
           to: `+91${phonenumber}`,
           code: otp
         })
-        .then(async verificationChecks => {
+        .then(async (verificationChecks) => {
           if (verificationChecks.status === "approved") {
             let user1 = await user.findOne({ phonenumber: phonenumber });
             console.log(
@@ -246,8 +225,7 @@ module.exports = {
     try {
       var saltRounds = 10;
       var password = body.password.toString();
-      bcrypt.hash(password, saltRounds, async function(err, newpassword) {
-        console.log(newpassword);
+      bcrypt.hash(password, saltRounds, async function (err, newpassword) {
         if (err) {
           reject(err);
         } else {
@@ -267,15 +245,11 @@ module.exports = {
 
   addToCart: async (userId, body) => {
     try {
-      console.log(body);
-      console.log(userId);
-      console.log(body.productid);
       if (!userId) {
         return { response: false };
       }
       let productId = body.productid;
       const productdetail = await product.findById(productId);
-      console.log(productdetail);
       if (!productdetail) {
         throw new Error("Product not found");
       }
@@ -283,7 +257,7 @@ module.exports = {
       const quantity = productdetail.productQuantity;
 
       if (quantity < 1) {
-        return{response:true,limit:true, msg:"Product out of stock"}
+        return { response: true, limit: true, msg: "Product out of stock" };
       }
 
       let added;
@@ -300,8 +274,6 @@ module.exports = {
         { $push: { products: { productId, quantity: 1 } } },
         { new: true }
       );
-      console.log(Cart);
-      console.log(added);
       if (!Cart && !added) {
         await cart.updateOne(
           { user: userId },
@@ -316,25 +288,19 @@ module.exports = {
       console.error(error);
     }
   },
-  getCartTotal: async userId => {
+  getCartTotal: async (userId) => {
     try {
-      console.log(userId);
-      console.log("sidharth");
       const Cart = await cart
         .findOne({ user: userId })
         .populate("products.productId");
-      console.log(Cart);
-      console.log("mnmnmnmnmnnmnm");
       if (!Cart) {
         return { status: false, message: "cart not found" };
       }
       let total = 0;
-      Cart.products.forEach(item => {
+      Cart.products.forEach((item) => {
         total += item.productId.productpromotionalprice * item.quantity;
       });
       total = parseInt(total);
-      console.log("aaalo");
-      console.log(total);
       return total;
     } catch (error) {
       console.error(error);
@@ -343,21 +309,16 @@ module.exports = {
   },
   removecartitem: async (userId, productId) => {
     try {
-      console.log(productId);
-      console.log(userId);
       const userProduct = await product.findById(productId);
-      console.log(userProduct);
       if (!userProduct) {
         return { status: false, message: "product not found" };
       }
 
       const Cart = await cart.findOne({ user: userId });
-      console.log(Cart);
       if (Cart) {
-        const itemIndex = Cart.products.findIndex(item =>
+        const itemIndex = Cart.products.findIndex((item) =>
           item.productId.equals(productId)
         );
-        console.log(itemIndex);
         if (itemIndex > -1) {
           Cart.products.splice(itemIndex, 1);
           await Cart.save();
@@ -372,7 +333,7 @@ module.exports = {
       console.error(error);
     }
   },
-  productdetailes: async body => {
+  productdetailes: async (body) => {
     try {
       let Productid = body;
       let productdetailes = await product.findById(Productid);
@@ -381,18 +342,15 @@ module.exports = {
       console.error(error);
     }
   },
-  changeProductQuantity: async body => {
+  changeProductQuantity: async (body) => {
     try {
       body.count = parseInt(body.count);
       body.quantity = parseInt(body.quantity);
       const productId = body.product;
       const cartId = body.cart;
       const count = body.count;
-      let Product = await product.findById(productId)
-      console.log("ooooppp");
-      console.log(Product);
-     console.log(Product.productQuantity);
-     productQuantity=Product.productQuantity
+      let Product = await product.findById(productId);
+      productQuantity = Product.productQuantity;
       return new Promise((resolve, reject) => {
         if (body.count == -1 && body.quantity == 1) {
           cart
@@ -400,21 +358,18 @@ module.exports = {
               { _id: cartId },
               { $pull: { products: { productId: productId } } }
             )
-            .then(response => {
+            .then((response) => {
               resolve({ response: response, remove: true });
             });
-        }
-        else if(productQuantity==body.quantity&& body.count==1){
-          resolve({response:response,limit:true});
-
-        }
-         else {
+        } else if (productQuantity == body.quantity && body.count == 1) {
+          resolve({ response: response, limit: true });
+        } else {
           cart
             .updateOne(
               { _id: cartId, "products.productId": productId },
               { $inc: { "products.$.quantity": count } }
             )
-            .then(response => {
+            .then((response) => {
               resolve(false);
             });
         }
@@ -424,8 +379,6 @@ module.exports = {
     }
   },
   addAddress: async (body, userId) => {
-    console.log(userId);
-    console.log(body);
     await addressModal.create({
       name: body.name,
       address: body.address,
@@ -435,19 +388,16 @@ module.exports = {
       phone: body.phonenumber,
       email: body.email,
       user: userId
-    }), { upsert: true };
+    }),
+      { upsert: true };
 
     return { status: true };
   },
   placeOrder: async (body, userId, total) => {
-    console.log(body);
-    console.log(userId);
     let addressId = body.address_id;
     const Cart = await cart
       .findOne({ user: userId })
       .populate("products.productId");
-    // const adrs = await addressModal.findOne({ user: userId })
-    //   console.log(adrs);
     const adrs = await addressModal.aggregate([
       {
         $match: { user: new ObjectId(userId) }
@@ -459,17 +409,10 @@ module.exports = {
         $match: { "address._id": new ObjectId(addressId) }
       }
     ]);
-
-    console.log(adrs[0]);
-    console.log(Cart);
-    console.log(total);
-    console.log(body.payment_method);
     let orderstatus = body.payment_method == "COD" ? "confirmed" : "pending";
     await orderModel.updateOne(
-      { user: userId }, // The filter to find the document to update (matching the "user" field with the userId)
+      { user: userId },
       {
-        // The update to be applied to the document
-
         shippingAddress: {
           name: adrs[0].address.name,
           address: adrs[0].address.address,
@@ -479,45 +422,13 @@ module.exports = {
         },
         items: Cart.products,
         payment_method: body.payment_method,
-        total: total, // Add the "total" field with the desired value
+        total: total,
         status: orderstatus
       }
-      // { upsert: true } // Options object specifying "upsert: true" to insert a new document if no match is found
     );
     return { status: true };
   },
-  // getCartCount: async(userId)=>{
-  //   try {
-  //     const Cart = await cart.findOne({ user: userId});
-  //     if (!Cart) {
-  //       return { status: false, message: "cart not found" };
-  //     }
-  //     return cart.products.length;
-
-  //   } catch (error) {
-  //     console.error(error);
-  //     return { status: false, message: "cart not found" };
-  //     }
-  // },
-
-  // ordersuccess:async(userId)=>{
-  //   try {
-  //     console.log("mmmmmmmmkkkkkkk");
-  //     const Cart = await cart
-  //       .findOne({ user: userId })
-  //       .populate('products')
-  //       console.log(Cart);
-
-  //       const order = await orderModel.find().populate('orderedItems')
-  //       console.log("eeeeeeeeee");
-  //       console.log(order);
-
-  //   } catch (error) {
-
-  //   }
-
-  // },
-  clearCart: async userId => {
+  clearCart: async (userId) => {
     await cart.findOneAndUpdate(
       { user: userId },
       { $set: { products: [] } },
@@ -525,22 +436,17 @@ module.exports = {
     );
   },
   generaterazorpay: async (orderId, totalAmount) => {
-    console.log(orderId);
-    console.log(totalAmount);
     try {
-      console.log("hghg");
-      // var instance = new Razorpay({ key_id: 'rzp_test_gFlxCSnUJ3aK5l', key_secret: 'nvm1ozXmKUEnyqNOjDJCMY80' })
       var options = {
         amount: totalAmount * 100, // amount in the smallest currency unit
         currency: "INR",
         receipt: "" + orderId
       };
       const order = await instance.orders.create(options);
-      console.log(order);
       return order;
     } catch (error) {}
   },
-  getCartCount: userId => {
+  getCartCount: (userId) => {
     return new Promise(async (resolve, reject) => {
       let Cart = await cart.findOne({ user: userId });
       if (Cart) {
@@ -549,11 +455,9 @@ module.exports = {
       resolve(cartCount);
     });
   },
-  deleteaddress: async body => {
+  deleteaddress: async (body) => {
     try {
-      console.log(body);
       let addressid = body;
-      console.log(addressid);
       let address = await addressModal.findById(addressid);
       address.status = false;
       address.save();
