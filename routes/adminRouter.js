@@ -18,7 +18,7 @@ router.get('/editproduct/:id',admincheck,admincontroller.editproduct)
 router.get('/order-list',admincheck,admincontroller.orderlist)
 router.get('/orders-detail/:id',admincheck,admincontroller.orderdetail)
 router.get('/coupon',admincheck,admincontroller.coupon)
-router.get('/salesReport',admincheck,admincontroller.salesReportPage);
+router.get('/sales-report',admincheck,admincontroller.salesReportPage);
 router.get('/search-admin',admincontroller.searchadmin)
 router.get('/offer',admincheck,admincontroller.offer)
 

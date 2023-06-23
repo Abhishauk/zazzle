@@ -104,6 +104,9 @@ a:focus {
 	text-decoration: none;
 	outline: none;
 }
+a{
+	text-decoration: none;
+}
 
 ul,
 ol {

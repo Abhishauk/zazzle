@@ -228,6 +228,7 @@ module.exports = {
     });
   },
   orderlist: async (req, res) => {
+    
     try {
       let orders = await orderhelper.getAllOrders();
       res.render("admin/order-list", { orders });
@@ -237,7 +238,9 @@ module.exports = {
   },
 
   orderdetail: async (req, res) => {
+    console.log("ppppp");
     let orderId = req.params.id;
+    console.log(orderId);
     try {
       const order = await Order.aggregate([
         { $match: { _id: new ObjectId(orderId) } },
@@ -267,6 +270,7 @@ module.exports = {
           }
         }
       ]);
+      console.log(order);
       res.render("admin/orders-detail", { Order: order[0] });
     } catch (err) {
       console.log(err);
@@ -336,6 +340,7 @@ module.exports = {
     res.render("admin/salesReport", { sales });
   },
   salesReport: async (req, res) => {
+  
     try {
       let { startDate, endDate } = req.body;
 
@@ -346,6 +351,7 @@ module.exports = {
         startDate,
         endDate
       );
+      
       for (let i = 0; i < salesReport.length; i++) {
         salesReport[i].orderDate = dateFormat(salesReport[i].orderDate);
         salesReport[i].totalAmount = currencyFormat(salesReport[i].totalAmount);

@@ -427,7 +427,7 @@ module.exports = {
 
   ordersuccess: async (req, res) => {
     try {
-      console.log("aaa");
+    
       const user = req.session.userid;
       const userId = req.session.userid._id;
       const orderId = req.query.id;
@@ -440,7 +440,7 @@ module.exports = {
       await userhelper.clearCart(userId);
       var wishListCount = await wishlisthelper.getWishListCount(userId);
       var cartCount = await userhelper.getCartCount(userId);
-      console.log(order);
+
       res.render("shop/ordersuccess.ejs", {
         orders,
         username,
@@ -471,14 +471,13 @@ module.exports = {
 
   orderdetailes: async (req, res) => {
     try {
+      
       let orderid = req.params.id;
       if (req.session.user) {
         var username = req.session.userid.username || null;
       }
 
-      let orderaddress = await orderHepler.getOrderedUserDetailsAndAddress(
-        orderid
-      );
+      let orderaddress = await orderHepler.getOrderedUserDetailsAndAddress(orderid);
       let orderdetailes = await orderHepler.getOrderedProductsDetails(orderid);
       let addresses = await addressModal.find({ user: req.session.userid._id });
       var userId = req.session.userid._id;
@@ -490,7 +489,8 @@ module.exports = {
         orderid,
         username,
         cartCount,
-        wishListCount
+        wishListCount,
+        orderaddress
       });
     } catch (error) {}
   },

@@ -5,9 +5,9 @@
                     <h2 class="content-title card-title">Order List </h2>
                     <p>Lorem ipsum dolor sit amet.</p>
                 </div>
-                <div>
+                <!-- <div>
                     <input type="text" placeholder="Search order ID" class="form-control bg-white">
-                </div>
+                </div> -->
             </div>
             <div class="card mb-4">
                 <header class="card-header">
@@ -51,7 +51,7 @@
                                 <tr>
                                     <td><%=order.userDetails[0].username %></td>
                                     <td><%=order.orderId %></td>
-                                    <td> <%= Order.orderDate.toISOString().split('T')[0] %></td>
+                                    <td> <%= order.orderDate.toISOString().split('T')[0] %></td>
                                     <td>₹<%=order.totalAmount %></td>
                                     <td><%=order.paymentMethod %></td>
                                     <td>
@@ -77,7 +77,7 @@
                                     <!-- <td><span class="badge rounded-pill alert-warning"></span></td> -->
                                     <!-- <td>03.12.2020</td> -->
                                     <td class="text-end">
-                                        <a href="/admin/orders-detail/<%=order.orderId %>" class="btn btn-md rounded font-sm">Detail</a>
+                                        <a href="/admin/orders-detail/<%=order._id %>" class="btn btn-md rounded font-sm">Detail</a>
                                         <!-- <div class="dropdown">
                                             <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
                                             <div class="dropdown-menu">
