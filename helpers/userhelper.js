@@ -10,9 +10,6 @@ const product = require("../models/productmodels");
 const cart = require("../models/cartmodels");
 const orderModel = require("../models/ordermodels");
 const addressModal = require("../models/addressmodels");
-const accountSid = "AC5249df9aa44e6846abc808d07350594b";
-const authToken = "330ec7d38f17b216f78127ef14e648a1";
-const client = require("twilio")(accountSid, authToken);
 const ObjectId = require("mongoose").Types.ObjectId;
 const Razorpay = require("razorpay");
 
@@ -23,6 +20,11 @@ var instance = new Razorpay({
   key_id,
   key_secret
 });
+
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require("twilio")(accountSid, authToken);
+
 
 dotenv.config();
 module.exports = {
@@ -152,6 +154,7 @@ module.exports = {
     });
   },
   verifyOTP: async (req, res) => {
+    console.log("aaa");
     const otp =
       req.body.otp1 +
       req.body.otp2 +
@@ -160,6 +163,8 @@ module.exports = {
       req.body.otp5;
     const phonenumber = req.body.phone;
     try {
+      console.log("aafxc");
+     
       client.verify.v2
         .services(`VAcf98a49832344e18ee4a4d7842816268`)
         .verificationChecks.create({
@@ -172,6 +177,7 @@ module.exports = {
             console.log(
               `User ${user1._id} logged in with phone number ${phonenumber}`
             );
+            console.log("aa");
             req.session.user = true;
             req.session.userid = user1;
             res.redirect("/");

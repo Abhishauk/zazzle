@@ -276,7 +276,7 @@
 
 
             function cancelOrder(orderId) {
-
+               console.log("sss");
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -290,7 +290,7 @@
                         $.ajax({
 
                             type: 'put',
-                            url: `/cancelOrder/${orderId}`,
+                            url: `/admin/cancelOrder/${orderId}`,
 
 
                             success: function (response) {

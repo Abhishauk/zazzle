@@ -33,6 +33,7 @@ const orderhelper = require("../helpers/orderhelper");
 const { log } = require("util");
 const couponmodels = require("../models/couponmodels");
 const { categories } = require("./admincontroller");
+const { LogPage } = require("twilio/lib/rest/serverless/v1/service/environment/log");
 dotenv.config();
 module.exports = {
   home: async (req, res, next) => {
@@ -246,12 +247,12 @@ module.exports = {
       userhelper.productdetailes(req.params.id).then((response) => {
         res.render("shop/product-details.ejs", { response, username });
       });
-    } catch (error) {}
+    } catch (error) { }
   },
   forgotpassword: async (req, res) => {
     try {
       res.render("shop/forgotpass.ejs");
-    } catch (error) {}
+    } catch (error) { }
   },
   resetpasspost: async (req, res) => {
     try {
@@ -259,7 +260,7 @@ module.exports = {
       userhelper.resetpasspost(req.body, userid).then((response) => {
         res.redirect("/login");
       });
-    } catch (error) {}
+    } catch (error) { }
   },
   shopcart: async function (req, res) {
     try {
@@ -297,7 +298,7 @@ module.exports = {
       userhelper.addToCart(userid, req.body).then((response) => {
         res.json(response);
       });
-    } catch (error) {}
+    } catch (error) { }
   },
   removecartitem: async (req, res) => {
     let productId = req.params.id;
@@ -427,7 +428,7 @@ module.exports = {
 
   ordersuccess: async (req, res) => {
     try {
-    
+
       const user = req.session.userid;
       const userId = req.session.userid._id;
       const orderId = req.query.id;
@@ -448,7 +449,7 @@ module.exports = {
         cartCount,
         wishListCount
       });
-    } catch (error) {}
+    } catch (error) { }
   },
 
   orderlist: async (req, res) => {
@@ -466,12 +467,12 @@ module.exports = {
         cartCount,
         wishListCount
       });
-    } catch (error) {}
+    } catch (error) { }
   },
 
   orderdetailes: async (req, res) => {
     try {
-      
+
       let orderid = req.params.id;
       if (req.session.user) {
         var username = req.session.userid.username || null;
@@ -492,7 +493,7 @@ module.exports = {
         wishListCount,
         orderaddress
       });
-    } catch (error) {}
+    } catch (error) { }
   },
 
   veryfyPayment: async (req, res) => {
@@ -503,8 +504,8 @@ module.exports = {
         let hmac = crypto.createHmac("sha256", "nvm1ozXmKUEnyqNOjDJCMY80");
         hmac.update(
           details["payment[razorpay_order_id]"] +
-            "|" +
-            details["payment[razorpay_payment_id]"]
+          "|" +
+          details["payment[razorpay_payment_id]"]
         );
         hmac = hmac.digest("hex");
         let orderResponse = details["order[response][receipt]"];
@@ -534,12 +535,12 @@ module.exports = {
         console.log(error, "error");
         res.status(500).send("Internal server error");
       }
-    } catch (error) {}
+    } catch (error) { }
   },
   paymentfailed: async (req, res) => {
     try {
       res.render("shop/success.ejs");
-    } catch (error) {}
+    } catch (error) { }
   },
   profile: async (req, res) => {
     try {
@@ -563,12 +564,25 @@ module.exports = {
         user,
         walletBalance
       });
-    } catch (error) {}
+    } catch (error) { }
   },
   cancelOrder: async (req, res) => {
     try {
+
+      console.log(req.params.id);
       let orderId = req.params.id;
       let userId = req.session.userid._id;
+      const order = await orderModel.findOne({ _id: req.params.id });
+
+      const canceledItems = order.orderedItems;
+
+      for (const item of canceledItems) {
+       const Product = await product.findOne({ _id: item.productId });
+        Product.productQuantity += item.quantity;
+        await Product.save();
+      }
+      
+
       const cancelledResponse = await orderModel.findOneAndUpdate(
         { _id: orderId },
         {
@@ -584,7 +598,7 @@ module.exports = {
         );
       }
       res.json({ status: true });
-    } catch (error) {}
+    } catch (error) { }
   },
   ReturnOrder: async (req, res) => {
     try {
@@ -599,12 +613,11 @@ module.exports = {
         }
       );
 
-      if (returnResponse.paymentMethod != "COD") {
         await wallethelper.addMoneyToWallet(userId, returnResponse.totalAmount);
-      }
+      
 
       res.json({ status: true });
-    } catch (error) {}
+    } catch (error) { }
   },
   productSearch: async (req, res) => {
     try {
@@ -637,7 +650,7 @@ module.exports = {
       );
 
       res.json(response);
-    } catch (error) {}
+    } catch (error) { }
   },
   wishlist: async (req, res) => {
     try {
@@ -682,7 +695,7 @@ module.exports = {
       } else {
         res.json({ success: false, message: response.message });
       }
-    } catch (error) {}
+    } catch (error) { }
   },
   deleteaddress: async (req, res) => {
     try {
@@ -690,11 +703,11 @@ module.exports = {
       userhelper.deleteaddress(addressid).then((response) => {
         res.json(response);
       });
-    } catch (error) {}
+    } catch (error) { }
   },
   editaddress: async (req, res) => {
     try {
-    } catch (error) {}
+    } catch (error) { }
   },
   filter: async (req, res) => {
     try {

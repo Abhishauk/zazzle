@@ -7,6 +7,7 @@ const Coupon = require("../models/couponmodels");
 const dotenv = require("dotenv");
 const twilioFunctions = require("../config/twilio");
 const orderhelper = require("../helpers/orderhelper");
+const wallethelper = require("../helpers/wallethelper");
 const Order = require("../models/ordermodels");
 const Offer = require("../models/offermodels");
 const ObjectId = require("mongoose").Types.ObjectId;
@@ -279,8 +280,22 @@ module.exports = {
   },
   cancelOrder: async (req, res) => {
     try {
+      console.log("gg");
       let orderId = req.params.id;
-      await Order.updateOne(
+ 
+      const order = await Order.findOne({ _id: req.params.id });
+
+      const canceledItems = order.orderedItems;
+
+      for (const item of canceledItems) {
+       const Product = await product.findOne({ _id: item.productId });
+        Product.productQuantity += item.quantity;
+        await Product.save();
+      }
+
+
+      
+      const cancelledResponse = await Order.findOneAndUpdate(
         { _id: orderId },
         {
           $set: {
@@ -288,13 +303,41 @@ module.exports = {
           }
         }
       );
+      let userId =cancelledResponse.user
+         console.log(userId);
+      console.log(cancelledResponse);
+      if (cancelledResponse.paymentMethod != "COD") {
+        await wallethelper.addMoneyToWallet(
+          userId,
+          cancelledResponse.totalAmount
+        );
+      }
       res.json({ status: true });
     } catch (error) {}
   },
   ReturnOrder: async (req, res) => {
     try {
       let orderId = req.params.id;
-      await Order.updateOne(
+      // await Order.updateOne(
+      //   { _id: orderId },
+      //   {
+      //     $set: {
+      //       orderStatus: "Return"
+      //     }
+      //   }
+      // );
+      const order = await Order.findOne({ _id: req.params.id });
+
+      const canceledItems = order.orderedItems;
+
+      for (const item of canceledItems) {
+       const Product = await product.findOne({ _id: item.productId });
+        Product.productQuantity += item.quantity;
+        await Product.save();
+      }
+
+
+      const returnResponse = await Order.findOneAndUpdate(
         { _id: orderId },
         {
           $set: {
@@ -302,6 +345,9 @@ module.exports = {
           }
         }
       );
+      let userId=returnResponse.user
+
+        await wallethelper.addMoneyToWallet(userId, returnResponse.totalAmount);
       res.json({ status: true });
     } catch (error) {}
   },
