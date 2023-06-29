@@ -99,7 +99,7 @@ module.exports = {
           } else {
             if (oldUser) {
               let msg = "User already exist";
-              res.render("shop/usersignup.ejs", { msg });
+              res.render("shop/usersign-up.ejs", { msg });
             } else {
               req.session.signupdata = req.body;
               let otpsend = await validatehelper.checkotpSignup(
@@ -604,6 +604,15 @@ module.exports = {
     try {
       let orderId = req.params.id;
       let userId = req.session.userid._id;
+      const order = await orderModel.findOne({ _id: req.params.id });
+
+      const returnedItems = order.orderedItems;
+
+      for (const item of returnedItems) {
+       const Product = await product.findOne({ _id: item.productId });
+        Product.productQuantity += item.quantity;
+        await Product.save();
+      }
       const returnResponse = await orderModel.findOneAndUpdate(
         { _id: orderId },
         {

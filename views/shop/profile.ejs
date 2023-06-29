@@ -163,20 +163,20 @@
 
                                                                                     <tr>
                                                                                         <th>Date</th>
-                                                                                        <!-- <th>address</th> -->
                                                                                         <th>Total</th>
                                                                                         <th>PaymentMethod</th>
                                                                                         <th>OrderStatus</th>
                                                                                         <th>Action</th>
+                                                                                       
 
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody>
                                                                                     <% orders.forEach(order=>{%>
                                                                                         <tr>
-                                                                                            <td>
+                                                                                           
                                                                                                 <td><%=order.orderDate.toISOString().split('T')[0]%></td>
-                                                                                            </td>
+                                                                                           
 
                                                                                             <td>
                                                                                                 <%=order.totalAmount %>
